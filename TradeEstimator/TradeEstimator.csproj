@@ -27,15 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="configuration\models\ml\ml_model0.ini">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="configuration\models\ml\ml_model1.ini">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="configuration\models\ml\ml_model2.ini">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="configuration\models\trade\tr_model0.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

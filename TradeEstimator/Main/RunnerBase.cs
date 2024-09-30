@@ -3,7 +3,6 @@ using TradeEstimator.Conf;
 using TradeEstimator.Data;
 using TradeEstimator.Log;
 using TradeEstimator.Trade;
-using TradeEstimator.ML;
 using ScottPlot.Colormaps;
 using System;
 using System.Collections.Generic;

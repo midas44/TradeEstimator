@@ -172,15 +172,7 @@ namespace TradeEstimator.Charts
         public void clear()
         {
             plot2.Plot.Clear();
-            //f1.Refresh();
             Application.DoEvents();
-        }
-
-
-        private void set_chart_title()
-        {
-            //plot2.Plot.Title(instr_config.instr_name + " " + config.data_timeframe);
-            //plot2.Plot.Title = "";
         }
 
 
@@ -255,13 +247,6 @@ namespace TradeEstimator.Charts
 
         public void finalize()
         {
-            //set_chart_limits_x_scale(Form1.form1.chart_limit_x_scale); 
-
-            //plot2.Plot.Axes.AutoScaleY();
-
-
-            //plot2.Plot.Title(f1.getactiveIndicatorName());
-
             createAnnotation();
 
             f1.Refresh();

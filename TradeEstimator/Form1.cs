@@ -132,10 +132,6 @@ namespace TradeEstimator
             comboBox_instrument.ForeColor = foregroundColor1;
 
 
-
-            comboBox_ml_model.BackColor = backgroundColor1;
-            comboBox_ml_model.ForeColor = foregroundColor1;
-
             comboBox_tr_model.BackColor = backgroundColor1;
             comboBox_tr_model.ForeColor = foregroundColor1;
 
@@ -237,7 +233,7 @@ namespace TradeEstimator
             runner = new(runnerBase);
             Application.DoEvents();
 
-            runIndicator();
+            runTrade();
         }
 
 
@@ -474,7 +470,6 @@ namespace TradeEstimator
 
             if (runner != null)
             {
-                setupMlControls(runner.mlModel);
                 setupTrControls(runner.trModel);
             }
 
@@ -506,7 +501,6 @@ namespace TradeEstimator
 
             if (runner != null)
             {
-                setupMlControls(runner.mlModel);
                 setupTrControls(runner.trModel);
             }
 
@@ -575,12 +569,6 @@ namespace TradeEstimator
         }
 
 
-        public string get_combobox_ml_model_text()
-        {
-            return comboBox_ml_model.Text;
-        }
-
-
         public string get_combobox_tr_model_text()
         {
             return comboBox_tr_model.Text;
@@ -616,12 +604,6 @@ namespace TradeEstimator
             }
 
 
-            comboBox_ml_model.Items.Clear();
-            foreach (string ml_model in config.ml_models)
-            {
-                comboBox_ml_model.Items.Add(ml_model);
-            }
-
             comboBox_tr_model.Items.Clear();
             foreach (string tr_model in config.trade_models)
             {
@@ -629,7 +611,7 @@ namespace TradeEstimator
             }
 
             comboBox_tr_model.SelectedItem = config.chosen_tr_model;
-            comboBox_ml_model.SelectedItem = config.chosen_ml_model;
+
 
             noRun = false;
 
@@ -683,19 +665,6 @@ namespace TradeEstimator
 
         }
 
-
-        public void setupMlControls(MlModel mlModel)
-        {
-            if (mlModel == null) { return; }
-
-            noRun = true;
-
-
-
-            noRun = false;
-
-            Application.DoEvents();
-        }
 
 
         public void setupTsetUI(List<string> astroNumPoints)
@@ -1019,7 +988,7 @@ namespace TradeEstimator
                 }
             }
 
-            runner.indicatorsRun();
+            runner.tradesRun();
         }
 
 
@@ -1076,136 +1045,16 @@ namespace TradeEstimator
             return chosen_timepoint;
         }
 
+
+
         public int reset_chosen_timepoint()
         {
             return -1;
         }
 
 
-
-        private void comboBox_planet_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (noRun) { return; }
-
-            if (runner != null)
-            {
-                runner.indicatorsRun();
-            }
-        }
-
-
-        private void comboBox_figure_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (noRun) { return; }
-
-            if (runner != null)
-            {
-                runner.indicatorsRun();
-            }
-        }
-
-
-        private void comboBox_aspect_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (noRun) { return; }
-
-            if (runner != null)
-            {
-                runner.indicatorsRun();
-            }
-        }
-
-
-        private void comboBox_mirror_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (noRun) { return; }
-
-            if (runner != null)
-            {
-                runner.indicatorsRun();
-            }
-        }
-
-
-
-        private void button_iter_rnd_Click(object sender, EventArgs e)
-        {
-            if (runner == null) { return; }
-            if (noRun) { return; }
-
-            noRun = true;
-            runner.setIterRnd();
-            noRun = false;
-
-            runner.indicatorsRun();
-        }
-
-
-        private void button_iter_prev_Click(object sender, EventArgs e)
-        {
-            if (runner != null)
-            {
-                noRun = true;
-
-                runner.setIterPrev();
-
-                noRun = false;
-
-                runner.indicatorsRun();
-            }
-        }
-
-
-        private void button_iter_next_Click(object sender, EventArgs e)
-        {
-            if (runner != null)
-            {
-                noRun = true;
-
-                runner.setIterNext();
-
-                noRun = false;
-
-                runner.indicatorsRun();
-            }
-        }
-
-
-
-        private void button_next_planet_Click(object sender, EventArgs e)
-        {
-            if (runner != null)
-            {
-                noRun = true;
-
-                runner.set_next_planet();
-
-                noRun = false;
-
-                runner.indicatorsRun();
-            }
-        }
-
-
-
-        private void button_prev_planet_Click(object sender, EventArgs e)
-        {
-            if (runner != null)
-            {
-                noRun = true;
-
-                runner.set_prev_planet();
-
-                noRun = false;
-
-                runner.indicatorsRun();
-            }
-        }
-
-
         public void highlight_mode_button(int mode_number)
         {
-
 
             if (mode_number == 2)
             {
@@ -1231,101 +1080,6 @@ namespace TradeEstimator
 
 
 
-        private void button_scale8_Click(object sender, EventArgs e)
-        {
-            if (chart2 != null)
-            {
-                // if (chart2.absGround > -1) //fixed???
-                // {
-                chart_limit_x_scale = 8;
-                chart2.set_chart_limits_x_scale(8);
-                highlight_scale_button(8);
-
-                if (runner != null)
-                {
-                    runner.indicatorsRun();
-                }
-                // }
-            }
-        }
-
-
-        private void button_scale7_Click(object sender, EventArgs e)
-        {
-            if (chart2 != null)
-            {
-                //if (chart2.absGround > -1) //fixed???
-                //{
-                chart_limit_x_scale = 7;
-                chart2.set_chart_limits_x_scale(7);
-                highlight_scale_button(7);
-
-                if (runner != null)
-                {
-                    runner.indicatorsRun();
-                }
-                //}
-            }
-        }
-
-
-        private void button_scale6_Click(object sender, EventArgs e)
-        {
-            if (chart2 != null)
-            {
-                // if (chart2.absGround > -1) //fixed???
-                // {
-                chart_limit_x_scale = 6;
-                chart2.set_chart_limits_x_scale(6);
-                highlight_scale_button(6);
-
-                if (runner != null)
-                {
-                    runner.indicatorsRun();
-                }
-                //}
-            }
-        }
-
-        private void button_scaleX0_Click(object sender, EventArgs e)
-        {
-            highlight_scale_button(10);
-            chart2XRange = 2;
-            set_chart2_scale_x();
-
-            if (runner != null)
-            {
-                runner.indicatorsRun();
-            }
-
-        }
-
-        private void button_scaleX1_Click(object sender, EventArgs e)
-        {
-            highlight_scale_button(11);
-            chart2XRange = 3.0;
-            set_chart2_scale_x();
-
-            if (runner != null)
-            {
-                runner.indicatorsRun();
-            }
-
-        }
-
-        private void button_scaleX2_Click(object sender, EventArgs e)
-        {
-            highlight_scale_button(12);
-            chart2XRange = 4.5;
-            set_chart2_scale_x();
-
-            if (runner != null)
-            {
-                runner.indicatorsRun();
-            }
-
-        }
-
 
         public void set_chart2_scale_x()
         {
@@ -1339,12 +1093,6 @@ namespace TradeEstimator
 
         }
 
-
-        public void highlight_scale_button(int scale)
-        {
-
-         
-        }
 
 
         private void button_open_dir_Click(object sender, EventArgs e)
@@ -1386,41 +1134,6 @@ namespace TradeEstimator
             Application.DoEvents();
         }
 
-
-        private void checkBox_ar0_li0_Click(object sender, EventArgs e)
-        {
-            runIndicator();
-        }
-
-
-        public void updateScales()
-        {
-
-
-        }
-
-
-
-
-        public void resetSqhxSeedsGround(int absGround)
-        {
-
-
-        }
-
-
-
-        public void resetWhSeedsGround(int absGround)
-        {
-
-        }
-
-
-
-        private void comboBox_function_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            runIndicator();
-        }
 
 
         private void button_tsetSave_Click(object sender, EventArgs e)
@@ -1489,9 +1202,6 @@ namespace TradeEstimator
 
         private void loadTset()
         {
-
-            return; //not yet
-
 
             tsetIndex = comboBox_tset.SelectedIndex;
 
@@ -1660,26 +1370,10 @@ namespace TradeEstimator
         }
 
 
-        private void button_mode1_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-
         private void button_mode0_Click_1(object sender, EventArgs e)
         {
             config.ui_mode = 0;
             start();
-        }
-
-
-        private void comboBox_ml_model_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-            if (runner == null) { return; }
-            if (noRun) { return; }
-            config.chosen_ml_model = comboBox_ml_model.Text;
-            setupMlControls(runner.createMlModel()); ;
-            runner.indicatorsRun();
         }
 
 
@@ -1689,7 +1383,7 @@ namespace TradeEstimator
             if (noRun) { return; }
             config.chosen_tr_model = comboBox_tr_model.Text;
             setupTrControls(runner.createTrModel());
-            runner.indicatorsRun();
+            runner.tradesRun();
         }
 
 
@@ -1731,11 +1425,11 @@ namespace TradeEstimator
 
 
 
-        private void runIndicator()
+        private void runTrade()
         {
             if (runner == null) { return; }
             if (noRun) { return; }
-            runner.indicatorsRun();
+            runner.tradesRun();
         }
 
     }

@@ -22,7 +22,6 @@ namespace TradeEstimator.Main
 
         public TradeModel trModel;
 
-        public MlModel mlModel;
 
         string trModelName;
 
@@ -66,7 +65,6 @@ namespace TradeEstimator.Main
 
         private void createModels()
         {
-            createMlModel();
             createTrModel();
         }
 
@@ -77,14 +75,6 @@ namespace TradeEstimator.Main
             trModel = new(config.chosen_tr_model);
             return trModel;
         }
-
-
-        public MlModel createMlModel()
-        {
-            mlModel = new(config.chosen_ml_model);
-            return mlModel;
-        }
-
 
 
         public void run()
@@ -109,11 +99,11 @@ namespace TradeEstimator.Main
                     break;
             }
 
-            indicatorsRun();
+            tradesRun();
         }
 
 
-        public void indicatorsRun()
+        public void tradesRun()
         {
             if (f1.noRun) { return; }
 
@@ -127,10 +117,10 @@ namespace TradeEstimator.Main
                     break;
 
                 case 2:
-                    createIndicators_withUI();
+                    createTrades_withUI();
                     createChart2();
                     outputData2();
-                    outputIndicators2();
+                    outputTrades2();
                     finalize2();
                     break;
             }
@@ -151,7 +141,6 @@ namespace TradeEstimator.Main
             {
                 f1.chart2XRange = 3.0;
                 f1.set_chart2_scale_x();
-                f1.highlight_scale_button(11);
 
                 chart2_rescale_key = false;
             }
@@ -195,12 +184,9 @@ namespace TradeEstimator.Main
         {
             Application.DoEvents();
 
-            f1.updateScales();
-
             instrName = f1.get_combobox_instrument_text();
 
             trModelName = f1.get_combobox_tr_model_text();
-            mlModelName = f1.get_combobox_ml_model_text();
  
 
             getTimingUI();
@@ -226,24 +212,13 @@ namespace TradeEstimator.Main
 
         }
 
-        public void createIndicators_withUI() //only for UI modes (1,2)!
+        public void createTrades_withUI() //only for UI modes (1,2)!
         {
             int[] timepoints = getChosenTimepoint();
 
 
 
         }
-
-
-        public void createIndicators() // for mode 0
-        {
-            //TO DO: find timepoints
-          //  indControllerNew = new("IndOne", config, logger, instrConfig, trModel, mlModel, anModel, daysQuotes, timepoints, displayDate1, displayDate2);
-        }
-
-
-
-
 
 
 

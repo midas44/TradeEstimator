@@ -13,24 +13,6 @@ namespace TradeEstimator.Charts
 {
     public partial class Chart2
     {
-        ScottPlot.Color indicator_color;
-
-        ScottPlot.Color ex_color;
-
-        ScottPlot.Color mp_color;
-
-        ScottPlot.Color qt_color ;
-
-        ScottPlot.Color cos_color;
-
-        ScottPlot.Color ground_color;
-
-        ScottPlot.Color ari0_color;
-
-
-
-        //NEW
-
 
 
         public void display_profile_line(double[] price, double[] timeline, ScottPlot.Color profile_color, int width) //TODO: remove

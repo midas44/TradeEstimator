@@ -53,7 +53,6 @@
             label1 = new Label();
             panel_models = new Panel();
             comboBox_tr_model = new ComboBox();
-            comboBox_ml_model = new ComboBox();
             panel_run = new Panel();
             buttonRun = new Button();
             progressBar_instr = new ProgressBar();
@@ -368,7 +367,6 @@
             // panel_models
             // 
             panel_models.Controls.Add(comboBox_tr_model);
-            panel_models.Controls.Add(comboBox_ml_model);
             panel_models.Location = new Point(214, 29);
             panel_models.Name = "panel_models";
             panel_models.Size = new Size(216, 160);
@@ -381,7 +379,7 @@
             comboBox_tr_model.FlatStyle = FlatStyle.Flat;
             comboBox_tr_model.ForeColor = Color.FromArgb(199, 214, 255);
             comboBox_tr_model.FormattingEnabled = true;
-            comboBox_tr_model.Location = new Point(23, 61);
+            comboBox_tr_model.Location = new Point(21, 17);
             comboBox_tr_model.Margin = new Padding(4);
             comboBox_tr_model.MaxDropDownItems = 12;
             comboBox_tr_model.Name = "comboBox_tr_model";
@@ -389,22 +387,6 @@
             comboBox_tr_model.TabIndex = 37;
             comboBox_tr_model.TabStop = false;
             comboBox_tr_model.SelectedIndexChanged += comboBox_tr_model_SelectedIndexChanged_1;
-            // 
-            // comboBox_ml_model
-            // 
-            comboBox_ml_model.BackColor = Color.FromArgb(24, 33, 49);
-            comboBox_ml_model.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox_ml_model.FlatStyle = FlatStyle.Flat;
-            comboBox_ml_model.ForeColor = Color.FromArgb(199, 214, 255);
-            comboBox_ml_model.FormattingEnabled = true;
-            comboBox_ml_model.Location = new Point(23, 13);
-            comboBox_ml_model.Margin = new Padding(4);
-            comboBox_ml_model.MaxDropDownItems = 12;
-            comboBox_ml_model.Name = "comboBox_ml_model";
-            comboBox_ml_model.Size = new Size(170, 31);
-            comboBox_ml_model.TabIndex = 36;
-            comboBox_ml_model.TabStop = false;
-            comboBox_ml_model.SelectedIndexChanged += comboBox_ml_model_SelectedIndexChanged_1;
             // 
             // panel_run
             // 
@@ -747,7 +729,6 @@
         private Label label1;
         private Panel panel_models;
         private ComboBox comboBox_tr_model;
-        private ComboBox comboBox_ml_model;
         private Panel panel_run;
         private Button buttonRun;
         private ProgressBar progressBar_instr;
