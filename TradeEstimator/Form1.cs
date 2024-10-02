@@ -32,7 +32,7 @@ namespace TradeEstimator
 
         string active_timerange;
 
-        public Chart2 chart2;
+        public Chart1 chart1;
 
         double track_x;
 
@@ -82,14 +82,12 @@ namespace TradeEstimator
 
         public int global_run_counter;
 
-        public double chart2YRange;
+        public double chart1YRange;
 
         int activeIndicator;
 
         string activeIndicatorName;
 
-
-        //public string chart2MarkLabel;
 
         public Form1()
         {
@@ -98,7 +96,6 @@ namespace TradeEstimator
             form1 = this;
             form1.StartPosition = FormStartPosition.Manual;
             form1.Location = new Point(0, 0);
-
 
 
             noRun = true;
@@ -143,8 +140,8 @@ namespace TradeEstimator
             button_mode0.BackColor = backgroundColor1;
             button_mode0.ForeColor = foregroundColor1;
 
-            button_mode2.BackColor = backgroundColor1;
-            button_mode2.ForeColor = foregroundColor1;
+            button_mode1.BackColor = backgroundColor1;
+            button_mode1.ForeColor = foregroundColor1;
 
             button_next.BackColor = backgroundColor1;
             button_next.ForeColor = foregroundColor1;
@@ -193,11 +190,11 @@ namespace TradeEstimator
 
             chosen_timepoint = -1;
 
-            panel_chart2.Visible = false;
+            panel_chart1.Visible = false;
 
-            panel_chart2.Dock = DockStyle.Fill;
+            panel_chart1.Dock = DockStyle.Fill;
 
-            plot2.Dock = DockStyle.Fill;
+            plot1.Dock = DockStyle.Fill;
 
             chart_limit_x_scale = -1;
 
@@ -205,7 +202,7 @@ namespace TradeEstimator
 
             global_run_counter = 0;
 
-            chart2YRange = 3;
+            chart1YRange = 3;
 
             Application.DoEvents();
 
@@ -233,8 +230,6 @@ namespace TradeEstimator
 
         private void start()
         {
-
-            //highlight_scale_button(3);
             runner = new(runnerBase);
             Application.DoEvents();
 
@@ -246,7 +241,6 @@ namespace TradeEstimator
         {
             return ScottPlot.Color.FromHex(clr.R.ToString("X2") + clr.G.ToString("X2") + clr.B.ToString("X2"));
         }
-
 
 
         public string get_path()
@@ -274,15 +268,12 @@ namespace TradeEstimator
                 case 0:
                     arrangePanels0();
                     break;
-                case 1:
 
-                    break;
-                case 2:
-                    arrangePanels2();
+                case 1:
+                    arrangePanels1();
                     break;
             }
         }
-
 
 
         private void arrangePanels0()
@@ -334,15 +325,12 @@ namespace TradeEstimator
         }
 
 
-
-        private void arrangePanels2()
+        private void arrangePanels1()
         {
-
             panel0.Visible = false;
             panel1.Visible = false;
             panel3.Visible = false;
             textBox_log.Visible = false;
-
 
 
             //panel1
@@ -379,17 +367,13 @@ namespace TradeEstimator
 
             //on panel2 subpanels
 
-            //int x8 = x3 + panel_instr_time.Width / 2;
             int x8 = x1;
-
 
             //main panels
             int bottom_pad = 210;
             panel1.Height = y2;
             panel3.Height = y2 + bottom_pad;
 
-            //panel1.Location = new Point(0, 0);
-            //panel2.Location = new Point(0, y2);
 
             panel1.Dock = DockStyle.Fill;
 
@@ -399,9 +383,6 @@ namespace TradeEstimator
             panel3.Location = new Point(0, 0);
             panel3.Dock = DockStyle.Bottom;
             panel0.Dock = DockStyle.Fill;
-
-            //panel2.BackColor = Color.Lime; 
-
 
             form1.CenterToScreen();
             form1.WindowState = FormWindowState.Maximized;
@@ -436,42 +417,9 @@ namespace TradeEstimator
         }
 
 
-        public void setupMode_1() //same as 2 but can be different in future
+        public void setupMode_1()
         {
             logger.log("setupMode_1", 1);
-
-
-            form1.Location = new Point(config.form1_x, config.form1_y);
-            form1.Width = config.form1_w;
-            form1.Height = config.form1_h;
-            //form1.WindowState = FormWindowState.Normal;
-            //form1.WindowState = FormWindowState.Maximized;
-
-            arrangePanels();
-
-
-            highlight_mode_button(config.ui_mode);
-
-            reset_labels();
-
-            setupModelControls(config);
-
-            if (runner != null)
-            {
-                setupTrControls(runner.trModel);
-            }
-
-            setupInstrTimeControls(config);
-
-            setActiveTimerange();
-
-            Application.DoEvents();
-        }
-
-
-        public void setupMode_2()
-        {
-            logger.log("setupMode_2", 1);
 
             form1.Location = new Point(config.form1_x, config.form1_y);
             form1.Width = config.form1_w;
@@ -768,79 +716,57 @@ namespace TradeEstimator
         }
 
 
-        private void button_mode0_Click(object sender, EventArgs e)
-        {
-            config.ui_mode = 0;
-            start();
-        }
-
-
-        private void button_mode1_Click(object sender, EventArgs e)
-        {
-            config.ui_mode = 1;
-            start();
-        }
-
-
-        private void button_mode2_Click(object sender, EventArgs e)
-        {
-            config.ui_mode = 2;
-            start();
-        }
-
-
-
         public void show_panelB()
         {
-            panel_chart2.Visible = true;
+            panel_chart1.Visible = true;
         }
 
 
-        public void set_chart2(Chart2 chart2)
+        public void set_chart1(Chart1 chart1)
         {
-            this.chart2 = chart2;
+            this.chart1 = chart1;
         }
 
 
-        public Chart2 get_chart2()
+        public Chart1 get_chart1()
         {
-            return this.chart2;
+            return this.chart1;
         }
 
 
 
-        private void plot2_MouseMove(object sender, MouseEventArgs e)
+        private void plot1_MouseMove(object sender, MouseEventArgs e)
         {
             if (noRun) { return; }
 
-            if (chart2 != null)
+            if (chart1 != null)
             {
-                chart2.set_chart_limits_y();
+                chart1.set_chart_limits_y();
             }
 
             Pixel p = new(e.Location.X, e.Location.Y);
-            Coordinates c = Form1.form1.plot2.Plot.GetCoordinates(p);
+            Coordinates c = Form1.form1.plot1.Plot.GetCoordinates(p);
 
             double x = c.X;
             double y = c.Y;
 
             int xx = (int)Math.Ceiling(x);
 
-            if (chart2 != null)
+            if (chart1 != null)
             {
-                if (xx >= 0 && xx < chart2.timeline.Length)
+                if (xx >= 0 && xx < chart1.timeline.Length)
                 {
-                    string t = chart2.timeline[xx].ToString("MMM dd yyyy (ddd)  HH:mm");
+                    string t = chart1.timeline[xx].ToString("MMM dd yyyy (ddd)  HH:mm");
                     string info = current_instrument + " " + t; //TODO: get instr format                   
                     label1.Text = info;
 
-                    label3.Text = y.ToString(chart2.instr_price_format);
+                    label3.Text = y.ToString(chart1.instr_price_format);
                     //chart1.track(x, y);
-                    label7.Text = "O: " + chart2.Open[xx].ToString(chart2.instr_price_format) +
-                                  "  H: " + chart2.High[xx].ToString(chart2.instr_price_format) +
-                                  "  L: " + chart2.Low[xx].ToString(chart2.instr_price_format) +
-                                  "  C: " + chart2.Close[xx].ToString(chart2.instr_price_format);
-                    // " V: " + ((int)Math.Round(chart2.Volume[xx])).ToString();
+                    label7.Text = "O: " + chart1.Open[xx].ToString(chart1.instr_price_format) +
+                                  "  H: " + chart1.High[xx].ToString(chart1.instr_price_format) +
+                                  "  L: " + chart1.Low[xx].ToString(chart1.instr_price_format) +
+                                  "  C: " + chart1.Close[xx].ToString(chart1.instr_price_format);
+                    // " V: " + ((int)Math.Round(chart1.Volume[xx])).ToString();
                 }
             }
 
@@ -850,18 +776,18 @@ namespace TradeEstimator
 
 
 
-        private void plot2_DoubleClick(object sender, EventArgs e)
+        private void plot1_DoubleClick(object sender, EventArgs e)
         {
             if (noRun) { return; }
 
-            chart2.set_chart_limits();
+            chart1.set_chart_limits();
 
-            chart2.finalize();
+            chart1.finalize();
         }
 
 
 
-        private void plot2_MouseUp(object sender, MouseEventArgs e) //new
+        private void plot1_MouseUp(object sender, MouseEventArgs e) //new
         {
             if (noRun) { return; }
 
@@ -870,28 +796,28 @@ namespace TradeEstimator
 
             int xx = (int)Math.Ceiling(x);
 
-            if (chart2 != null)
+            if (chart1 != null)
             {
-                int n = chart2.timeline.Length;
+                int n = chart1.timeline.Length;
 
                 if (xx >= 0 && xx < n)
                 {
                     chosen_timepoint = xx;
 
-                    string t = chart2.timeline[xx].ToString("MMM dd yyyy (ddd)  HH:mm");
+                    string t = chart1.timeline[xx].ToString("MMM dd yyyy (ddd)  HH:mm");
                     string info = current_instrument + " " + t;
 
                     label2.Text = info;
 
-                    label4.Text = "ADR: " + ((int)Math.Round(chart2.ADR[xx] / chart2.instr_tick)).ToString() + " (" + chart2.ADR[xx].ToString(chart2.instr_price_format) + ")";
+                    label4.Text = "ADR: " + ((int)Math.Round(chart1.ADR[xx] / chart1.instr_tick)).ToString() + " (" + chart1.ADR[xx].ToString(chart1.instr_price_format) + ")";
 
-                    label5.Text = "O: " + chart2.Open[xx].ToString(chart2.instr_price_format) +
-                                  "  H: " + chart2.High[xx].ToString(chart2.instr_price_format) +
-                                  "  L: " + chart2.Low[xx].ToString(chart2.instr_price_format) +
-                                  "  C: " + chart2.Close[xx].ToString(chart2.instr_price_format);
-                    //" V: " + ((int)Math.Round(chart2.Volume[xx])).ToString();
+                    label5.Text = "O: " + chart1.Open[xx].ToString(chart1.instr_price_format) +
+                                  "  H: " + chart1.High[xx].ToString(chart1.instr_price_format) +
+                                  "  L: " + chart1.Low[xx].ToString(chart1.instr_price_format) +
+                                  "  C: " + chart1.Close[xx].ToString(chart1.instr_price_format);
+                    //" V: " + ((int)Math.Round(chart.Volume[xx])).ToString();
 
-                    chart2.setMark(x, y);
+                    chart1.setMark(x, y);
                 }
             }
 
@@ -900,11 +826,11 @@ namespace TradeEstimator
 
 
 
-        public double getChart2MarkX()
+        public double getChart1MarkX()
         {
             double x = -1;
 
-            if (chart2 != null)
+            if (chart1 != null)
             {
                 if (chosen_timepoint > 0)
                 {
@@ -945,11 +871,11 @@ namespace TradeEstimator
         public void highlight_mode_button(int mode_number)
         {
 
-            if (mode_number == 2)
+            if (mode_number == 1)
             {
 
-                button_mode2.BackColor = backgroundColor1;
-                button_mode2.ForeColor = highlightColor2;
+                button_mode1.BackColor = backgroundColor1;
+                button_mode1.ForeColor = highlightColor2;
 
                 button_mode0.BackColor = backgroundColor1;
                 button_mode0.ForeColor = highlightColor1;
@@ -960,8 +886,8 @@ namespace TradeEstimator
                 button_mode0.BackColor = backgroundColor1;
                 button_mode0.ForeColor = highlightColor2;
 
-                button_mode2.BackColor = backgroundColor1;
-                button_mode2.ForeColor = highlightColor1;
+                button_mode1.BackColor = backgroundColor1;
+                button_mode1.ForeColor = highlightColor1;
             }
 
             Application.DoEvents();
@@ -969,28 +895,28 @@ namespace TradeEstimator
 
 
 
-        public void set_chart2_scale_x()
+        public void set_chart1_scale_x()
         {
-            if (chart2 != null)
+            if (chart1 != null)
             {
-                chart2.set_chart_limits_x();
+                chart1.set_chart_limits_x();
             }
         }
 
-        public void set_chart2_scale_y()
+        public void set_chart1_scale_y()
         {
-            if (chart2 != null)
+            if (chart1 != null)
             {
-                chart2.set_chart_limits_y();
+                chart1.set_chart_limits_y();
             }
         }
 
-        public void set_chart2_scale_xy()
+        public void set_chart1_scale_xy()
         {
-            if (chart2 != null)
+            if (chart1 != null)
             {
-                chart2.set_chart_limits_x();
-                chart2.set_chart_limits_y();
+                chart1.set_chart_limits_x();
+                chart1.set_chart_limits_y();
             }
         }
 
@@ -1204,56 +1130,32 @@ namespace TradeEstimator
         }
 
 
-        /*
-        public void showTrack2()
-        {
-            double x = track_x;
-            double y = track_y;
-            int yy = (int)Math.Ceiling(y);
-
-            if (chart2 != null)
-            {
-                int n = chart2.timeline.Length;
-
-                if (yy >= 0 && yy < n)
-                {
-                    string t = chart2.timeline[n - yy - 1].ToString("MMM dd yyyy (ddd)  HH:mm");
-                    string info = current_instrument + " " + t;
-                    label1.Text = info;
-                    label3.Text = x.ToString(chart2.instrPriceFormat);
-                }
-            }
-
-        }
-        */
-
         public void showMark2()
         {
             double x = track_x;
             double y = track_y;
             int xx = (int)Math.Ceiling(x);
 
-            if (chart2 != null)
+            if (chart1 != null)
             {
-                int n = chart2.timeline.Length;
+                int n = chart1.timeline.Length;
 
                 if (xx >= 0 && xx < n)
                 {
                     chosen_timepoint = xx;
 
-                    string t = chart2.timeline[xx].ToString("MMM dd yyyy (ddd)  HH:mm");
+                    string t = chart1.timeline[xx].ToString("MMM dd yyyy (ddd)  HH:mm");
                     string info = current_instrument + " " + t;
                     label2.Text = info;
 
 
-                    label4.Text = "ADR: " + ((int)Math.Round(chart2.ADR[xx] / chart2.instr_tick)).ToString() + " (" + chart2.ADR[xx].ToString(chart2.instr_price_format) + ")";
+                    label4.Text = "ADR: " + ((int)Math.Round(chart1.ADR[xx] / chart1.instr_tick)).ToString() + " (" + chart1.ADR[xx].ToString(chart1.instr_price_format) + ")";
 
 
 
                 }
             }
         }
-
 
 
         private void dateTimePicker2_CloseUp(object sender, EventArgs e)
@@ -1265,14 +1167,14 @@ namespace TradeEstimator
         }
 
 
-        private void button_mode2_Click_1(object sender, EventArgs e)
+        private void button_mode1_Click(object sender, EventArgs e)
         {
-            config.ui_mode = 2;
+            config.ui_mode = 1;
             start();
         }
 
 
-        private void button_mode0_Click_1(object sender, EventArgs e)
+        private void button_mode0_Click(object sender, EventArgs e)
         {
             config.ui_mode = 0;
             start();
@@ -1287,7 +1189,6 @@ namespace TradeEstimator
             setupTrControls(runner.createTrModel());
             runner.tradesRun();
         }
-
 
 
         private void comboBox_instrument_SelectedIndexChanged_1(object sender, EventArgs e)
@@ -1311,40 +1212,19 @@ namespace TradeEstimator
         }
 
 
-        private void chart2_autorescale_x()
+        private void chart1_autorescale_y()
         {
-
-
-            if (chart2 != null)
+            if (chart1 != null)
             {
-                // chart2.set_chart_x_limits();
-
-                chart2.set_chart_limits_y();
+                chart1.set_chart_limits_y();
             }
         }
 
 
-
-
-
-        private void chart2_autorescale_y()
+        private void plot1_Move(object sender, EventArgs e)
         {
-
-
-            if (chart2 != null)
-            {
-                // chart2.set_chart_x_limits();
-
-                // chart2.set_chart_y_limits();
-            }
+            chart1_autorescale_y();
         }
-
-
-        private void plot2_Move(object sender, EventArgs e)
-        {
-            chart2_autorescale_x();
-        }
-
 
 
         private void runTrade()
@@ -1360,11 +1240,11 @@ namespace TradeEstimator
             if (noRun) { return; }
 
 
-            if (chart2 != null)
+            if (chart1 != null)
             {
-                chart2.set_chart_limits();
+                chart1.set_chart_limits();
 
-                chart2.finalize();
+                chart1.finalize();
             }
         }
     }

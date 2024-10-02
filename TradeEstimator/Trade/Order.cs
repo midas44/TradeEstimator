@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TradeEstimator.Test
+namespace TradeEstimator.Trade
 {
     public class Order
     {
@@ -32,10 +32,10 @@ namespace TradeEstimator.Test
         public bool isActive;
 
 
-        public Order(string instr, 
-            string dir, int size, string type, 
+        public Order(string instr,
+            string dir, int size, string type,
             double triggerPrice, double tpPrice, double slPrice, double bePrice,
-            DateTime creationTime, DateTime expirationTime, 
+            DateTime creationTime, DateTime expirationTime,
             string id)
         {
             this.instr = instr;
@@ -53,13 +53,13 @@ namespace TradeEstimator.Test
 
             this.id = id;
 
-            isActive = true;   
+            isActive = true;
         }
 
 
         public void checkExpiration(Bar bar) //cycle all orders every bar!
         {
-            if(DateTime.Compare(bar.time, expirationTime) >= 0)
+            if (DateTime.Compare(bar.time, expirationTime) >= 0)
             {
                 isActive = false;
             }

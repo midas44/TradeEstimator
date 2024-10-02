@@ -27,6 +27,8 @@ namespace TradeEstimator.Conf
 
         public string data_timeframe;
 
+        public int adr_period;
+
         public string data_ext;
 
 
@@ -76,11 +78,7 @@ namespace TradeEstimator.Conf
 
         //Models
 
-        public List<string> astronum_models;
-
         public List<string> trade_models;
-
-        public List<string> ml_models;
 
 
         //Period
@@ -98,7 +96,6 @@ namespace TradeEstimator.Conf
         //ML
 
         public string chosen_tr_model;
-        public string chosen_ml_model;
 
 
         //Runtime
@@ -106,19 +103,6 @@ namespace TradeEstimator.Conf
 
         public int tf;
 
-        public string export_value_format;
-        public string export_angle_format;
-
-        public bool ex_gauss_display;
-        public bool mp_gauss_display;
-        public bool qt_gauss_display;
-
-        public bool ex_marker_display;
-        public bool mp_marker_display;
-        public bool qt_marker_display;
-
-        public bool cos_display;
-        //public bool hcircle_display; //New disabled - need not???
 
         public int begin_time_shift_days;
 
@@ -126,7 +110,6 @@ namespace TradeEstimator.Conf
 
         public Config()
         {
-            //CultureInfo System.Globalization.CultureInfo.InvariantCulture = CultureInfo.InvariantCulture;
 
             IniFile INI = new IniFile("configuration/config.ini");
 
@@ -137,13 +120,6 @@ namespace TradeEstimator.Conf
             quotes_path = INI.Read("quotes_path", "Path").Trim().Replace("[data_path]", data_path);
             log_path = INI.Read("log_path", "Path").Trim().Replace("[data_path]", data_path);
             tsets_path = INI.Read("tsets_path", "Path").Trim().Replace("[data_path]", data_path);
-
-            //debug
-            /*
-            MessageBox.Show(quotes_path);
-            MessageBox.Show(export_path);
-            MessageBox.Show(log_path);
-            */
 
 
             //Data
@@ -157,7 +133,7 @@ namespace TradeEstimator.Conf
 
             chart_time_margins = int.Parse(INI.Read("chart_time_margins", "Chart").Trim(), System.Globalization.CultureInfo.InvariantCulture);
 
-            //points_per_price_point = int.Parse(INI.Read("points_per_price_point", "Chart").Trim(), System.Globalization.CultureInfo.InvariantCulture);
+            adr_period = int.Parse(INI.Read("adr_period", "Chart").Trim(), System.Globalization.CultureInfo.InvariantCulture);
 
             half_range_adr_exp = double.Parse(INI.Read("half_range_adr_exp", "Chart").Trim(), System.Globalization.CultureInfo.InvariantCulture);
 
@@ -198,22 +174,7 @@ namespace TradeEstimator.Conf
             time_format = INI.Read("time_format", "Log").Trim();
 
 
-
-            //return;
-
-
             //Models
-
-            astronum_models = new List<string>();
-
-            string line1 = INI.Read("astronum_models", "Models").Trim(' ', ',');
-            string[] s1 = line1.Split(',');
-
-            foreach (string name in s1)
-            {
-                astronum_models.Add(name.Trim());
-            }
-
 
             trade_models = new List<string>();
 
@@ -225,16 +186,6 @@ namespace TradeEstimator.Conf
                 trade_models.Add(name.Trim());
             }
 
-
-            ml_models = new List<string>();
-
-            string line3 = INI.Read("ml_models", "Models").Trim(' ', ',');
-            string[] s3 = line3.Split(',');
-
-            foreach (string name in s3)
-            {
-                ml_models.Add(name.Trim());
-            }
 
 
             //Period
@@ -260,8 +211,6 @@ namespace TradeEstimator.Conf
             //ML
 
             chosen_tr_model = INI.Read("chosen_tr_model", "ML").Trim();
-
-            chosen_ml_model = INI.Read("chosen_ml_model", "ML").Trim();
 
 
 
@@ -327,21 +276,9 @@ namespace TradeEstimator.Conf
                     break;
             }
 
-            //TODO: read from INI?
-            //TODO: remove drem here, new in ml_model
-            export_value_format = "F4";
-            export_angle_format = "F4";
-
-            ex_marker_display = true;
-            mp_marker_display = true;
-            qt_marker_display = true;
-
-            cos_display = true;
-            //hcircle_display = false; //New disabled - need not???
 
             begin_time_shift_days = 60;
 
-            //tests = new();
         }
 
     }

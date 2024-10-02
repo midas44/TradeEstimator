@@ -1,7 +1,6 @@
 ﻿using TradeEstimator.Charts;
 using TradeEstimator.Conf;
 using TradeEstimator.Data;
-using TradeEstimator.Trade;
 using ScottPlot;
 using System;
 using System.Collections.Generic;
@@ -51,7 +50,7 @@ namespace TradeEstimator.Main
 
             instrConfig = new(instrName);
 
-            instrGrids = new(config, logger, trModel, daysQuotes, displayDate1, displayDate2);
+            instrGrids = new(config, logger, daysQuotes, displayDate1, displayDate2);
         }
 
 

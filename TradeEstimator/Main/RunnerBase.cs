@@ -13,7 +13,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TradeEstimator.Test;
 using System.Globalization;
 using System.Numerics;
 
@@ -32,7 +31,7 @@ namespace TradeEstimator.Main
             this.config = config;
             this.logger = logger;
 
-            logger.logTitle("New Merlin", 1);
+            logger.logTitle("Trade Estimator", 1);
             logger.log_("Runner", 1);
 
             loadData();

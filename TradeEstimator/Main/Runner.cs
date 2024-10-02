@@ -22,7 +22,6 @@ namespace TradeEstimator.Main
 
         public TradeModel trModel;
 
-
         string trModelName;
 
         string mlModelName;
@@ -33,16 +32,14 @@ namespace TradeEstimator.Main
 
         public Tsets tset;
 
-
         public bool isBusy;
 
-        bool chart2_rescale_key;
+        bool chart1_rescale_key;
 
 
 
         public Runner(RunnerBase runnerBase)
         {
-
             isBusy = true;
 
             this.runnerBase = runnerBase;
@@ -58,8 +55,6 @@ namespace TradeEstimator.Main
             setupUI();
 
             run();
-
-            
         }
 
 
@@ -67,7 +62,6 @@ namespace TradeEstimator.Main
         {
             createTrModel();
         }
-
 
 
         public TradeModel createTrModel()
@@ -82,7 +76,7 @@ namespace TradeEstimator.Main
             if (f1.noRun) { return; }
 
 
-            chart2_rescale_key = true;
+            chart1_rescale_key = true;
 
 
             f1.reset_chosen_timepoint();
@@ -94,7 +88,7 @@ namespace TradeEstimator.Main
 
                     break;
 
-                case 2:
+                case 1:
                     getInstrData();
                     break;
             }
@@ -116,12 +110,12 @@ namespace TradeEstimator.Main
 
                     break;
 
-                case 2:
+                case 1:
                     createTrades_withUI();
-                    createChart2();
-                    outputData2();
-                    outputTrades2();
-                    finalize2();
+                    createChart1();
+                    outputData1();
+                    outputTrades1();
+                    finalize1();
                     break;
             }
 
@@ -130,25 +124,23 @@ namespace TradeEstimator.Main
         }
 
 
-        private void finalize2()
+        private void finalize1()
         {
-            chart2.setMark(f1.getChart2MarkX(),0); //debug disabled
-            //f1.showTrack2();
+            chart1.setMark(f1.getChart1MarkX(),0); //debug disabled
+
             f1.showMark2();
-              chart2.mark(); //debug disabled
+            chart1.mark(); 
 
-            if (chart2_rescale_key) //only on run event
+            if (chart1_rescale_key) //only on run event
             {
-                f1.chart2YRange = 3.0;
+                f1.chart1YRange = 3.0;
 
-                f1.set_chart2_scale_xy();
-                
+                f1.set_chart1_scale_xy();
 
-
-                chart2_rescale_key = false;
+                chart1_rescale_key = false;
             }
 
-                chart2.finalize();
+            chart1.finalize();
         }
 
 
@@ -164,8 +156,8 @@ namespace TradeEstimator.Main
                     f1.setupMode_0();
                     break;
 
-                case 2:
-                    f1.setupMode_2();
+                case 1:
+                    f1.setupMode_1();
                     setTimingUI();
                     break;
             }

@@ -15,38 +15,38 @@ namespace TradeEstimator.Main
         //Runner2
 
 
-        Chart2 chart2;
+        Chart1 chart1;
 
 
-        public void createChart2()
+        public void createChart1()
         {
-            chart2 = new(config, logger);
+            chart1 = new(config, logger);
 
-            f1.set_chart2(chart2);
+            f1.set_chart1(chart1);
         }
 
 
-        public void outputData2()
+        public void outputData1()
         {
 
             if (timerange == "year")
             {
-                chart2.displayInstrDataHL(instrConfig, daysQuotes);
+                chart1.displayInstrDataHL(instrConfig, daysQuotes);
 
-                chart2.display_grids_light(daysQuotes, instrGrids.gridSets, displayDate1, displayDate2);
+                chart1.display_grids_light(daysQuotes, instrGrids.gridSets, displayDate1, displayDate2);
             }
             else
             {
-                chart2.displayInstrDataOHLC(instrConfig, daysQuotes);
+                chart1.displayInstrDataOHLC(instrConfig, daysQuotes);
 
-                chart2.display_grids(daysQuotes, instrGrids.gridSets, displayDate1, displayDate2);
+                chart1.display_grids(daysQuotes, instrGrids.gridSets, displayDate1, displayDate2);
             }
 
-            chart2.finalize();
+            chart1.finalize();
         }
 
 
-        public void outputTrades2()
+        public void outputTrades1()
         {
             getAnIterUiState();
 

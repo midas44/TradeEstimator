@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TradeEstimator.Test
+namespace TradeEstimator.Trade
 {
     public class Equity
     {
@@ -25,7 +25,7 @@ namespace TradeEstimator.Test
 
         public Equity(InstrConfig instrConfig)
         {
-            this.instr = instrConfig.instr_name;
+            instr = instrConfig.instr_name;
 
             equityLine = new List<double>();
 

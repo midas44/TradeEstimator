@@ -30,8 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             panel0 = new Panel();
-            panel_chart2 = new Panel();
-            plot2 = new ScottPlot.WinForms.FormsPlot();
+            panel_chart1 = new Panel();
+            plot1 = new ScottPlot.WinForms.FormsPlot();
             panel3 = new Panel();
             panel1 = new Panel();
             panel_tr = new Panel();
@@ -63,7 +63,7 @@
             button_open_dir = new Button();
             textBox_path = new TextBox();
             panel_modes = new Panel();
-            button_mode2 = new Button();
+            button_mode1 = new Button();
             button_mode0 = new Button();
             panel_instr_time = new Panel();
             button_reset2 = new Button();
@@ -76,7 +76,7 @@
             dateTimePicker1 = new DateTimePicker();
             checkedListBox_period = new CheckedListBox();
             panel0.SuspendLayout();
-            panel_chart2.SuspendLayout();
+            panel_chart1.SuspendLayout();
             panel3.SuspendLayout();
             panel1.SuspendLayout();
             panel_tr.SuspendLayout();
@@ -90,42 +90,42 @@
             // 
             // panel0
             // 
-            panel0.Controls.Add(panel_chart2);
+            panel0.Controls.Add(panel_chart1);
             panel0.Location = new Point(23, 27);
             panel0.Margin = new Padding(4);
             panel0.Name = "panel0";
-            panel0.Size = new Size(2133, 351);
+            panel0.Size = new Size(2133, 208);
             panel0.TabIndex = 7;
             // 
-            // panel_chart2
+            // panel_chart1
             // 
-            panel_chart2.Controls.Add(plot2);
-            panel_chart2.Location = new Point(27, 20);
-            panel_chart2.Name = "panel_chart2";
-            panel_chart2.Size = new Size(513, 302);
-            panel_chart2.TabIndex = 12;
+            panel_chart1.Controls.Add(plot1);
+            panel_chart1.Location = new Point(27, 20);
+            panel_chart1.Name = "panel_chart1";
+            panel_chart1.Size = new Size(513, 160);
+            panel_chart1.TabIndex = 12;
             // 
-            // plot2
+            // plot1
             // 
-            plot2.DisplayScale = 1F;
-            plot2.Font = new Font("Segoe UI", 12F);
-            plot2.Location = new Point(17, 15);
-            plot2.Margin = new Padding(4);
-            plot2.Name = "plot2";
-            plot2.Size = new Size(424, 259);
-            plot2.TabIndex = 10;
-            plot2.Visible = false;
-            plot2.DoubleClick += plot2_DoubleClick;
-            plot2.MouseMove += plot2_MouseMove;
-            plot2.MouseUp += plot2_MouseUp;
-            plot2.Move += plot2_Move;
+            plot1.DisplayScale = 1F;
+            plot1.Font = new Font("Segoe UI", 12F);
+            plot1.Location = new Point(17, 15);
+            plot1.Margin = new Padding(4);
+            plot1.Name = "plot1";
+            plot1.Size = new Size(424, 117);
+            plot1.TabIndex = 10;
+            plot1.Visible = false;
+            plot1.DoubleClick += plot1_DoubleClick;
+            plot1.MouseMove += plot1_MouseMove;
+            plot1.MouseUp += plot1_MouseUp;
+            plot1.Move += plot1_Move;
             // 
             // panel3
             // 
             panel3.Controls.Add(panel1);
-            panel3.Location = new Point(23, 404);
+            panel3.Location = new Point(23, 264);
             panel3.Name = "panel3";
-            panel3.Size = new Size(2133, 1085);
+            panel3.Size = new Size(2133, 1020);
             panel3.TabIndex = 30;
             // 
             // panel1
@@ -503,26 +503,26 @@
             // 
             // panel_modes
             // 
-            panel_modes.Controls.Add(button_mode2);
+            panel_modes.Controls.Add(button_mode1);
             panel_modes.Controls.Add(button_mode0);
             panel_modes.Location = new Point(28, 29);
             panel_modes.Name = "panel_modes";
             panel_modes.Size = new Size(160, 160);
             panel_modes.TabIndex = 21;
             // 
-            // button_mode2
+            // button_mode1
             // 
-            button_mode2.BackColor = Color.FromArgb(24, 33, 49);
-            button_mode2.FlatStyle = FlatStyle.Flat;
-            button_mode2.ForeColor = Color.FromArgb(113, 221, 244);
-            button_mode2.Location = new Point(16, 86);
-            button_mode2.Margin = new Padding(4);
-            button_mode2.Name = "button_mode2";
-            button_mode2.Size = new Size(121, 40);
-            button_mode2.TabIndex = 25;
-            button_mode2.Text = "Mode 2";
-            button_mode2.UseVisualStyleBackColor = false;
-            button_mode2.Click += button_mode2_Click_1;
+            button_mode1.BackColor = Color.FromArgb(24, 33, 49);
+            button_mode1.FlatStyle = FlatStyle.Flat;
+            button_mode1.ForeColor = Color.FromArgb(113, 221, 244);
+            button_mode1.Location = new Point(16, 86);
+            button_mode1.Margin = new Padding(4);
+            button_mode1.Name = "button_mode1";
+            button_mode1.Size = new Size(121, 40);
+            button_mode1.TabIndex = 25;
+            button_mode1.Text = "Mode 1";
+            button_mode1.UseVisualStyleBackColor = false;
+            button_mode1.Click += button_mode1_Click;
             // 
             // button_mode0
             // 
@@ -536,7 +536,7 @@
             button_mode0.TabIndex = 17;
             button_mode0.Text = "Mode 0";
             button_mode0.UseVisualStyleBackColor = false;
-            button_mode0.Click += button_mode0_Click_1;
+            button_mode0.Click += button_mode0_Click;
             // 
             // panel_instr_time
             // 
@@ -689,7 +689,7 @@
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(24, 33, 49);
-            ClientSize = new Size(2186, 1515);
+            ClientSize = new Size(2186, 1334);
             Controls.Add(panel0);
             Controls.Add(panel3);
             Font = new Font("Segoe UI", 10F);
@@ -699,7 +699,7 @@
             Name = "Form1";
             Text = "TradeEstimator";
             panel0.ResumeLayout(false);
-            panel_chart2.ResumeLayout(false);
+            panel_chart1.ResumeLayout(false);
             panel3.ResumeLayout(false);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
@@ -717,8 +717,8 @@
 
         #endregion
         private Panel panel0;
-        private Panel panel_chart2;
-        private ScottPlot.WinForms.FormsPlot plot2;
+        private Panel panel_chart1;
+        private ScottPlot.WinForms.FormsPlot plot1;
         private Button button_scalex3;
         private Button button_scalex1;
         private Panel panel3;
@@ -747,7 +747,7 @@
         private Button button_open_dir;
         private TextBox textBox_path;
         private Panel panel_modes;
-        private Button button_mode2;
+        private Button button_mode1;
         private Button button_mode0;
         private Panel panel_instr_time;
         private Button button_reset2;

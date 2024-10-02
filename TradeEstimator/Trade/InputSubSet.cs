@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TradeEstimator.Test
+namespace TradeEstimator.Trade
 {
 
     public class InputSubSet

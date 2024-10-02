@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TradeEstimator.Test
+namespace TradeEstimator.Trade
 {
     public class Bar
     {
@@ -28,7 +28,7 @@ namespace TradeEstimator.Test
         public double adr;
 
 
-        public Bar(string instr, DateTime time, double open, double high, double low, double close, double volume, double dr, double adr) 
+        public Bar(string instr, DateTime time, double open, double high, double low, double close, double volume, double dr, double adr)
         {
             this.instr = instr;
 

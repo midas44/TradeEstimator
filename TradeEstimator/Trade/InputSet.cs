@@ -4,20 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TradeEstimator.Test
+namespace TradeEstimator.Trade
 {
     public class InputSet
     {
 
         public List<InputSubSet> inputList;
 
-        public InputSet() 
+        public InputSet()
         {
 
             inputList = new();
 
-        }  
-        
+        }
+
 
         public void addInputSubSet(string instr, string dir, int size, string type, double triggerPrice, double tpPrice, double slPrice, double bePrice)
         {

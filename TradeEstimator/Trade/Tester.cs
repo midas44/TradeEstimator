@@ -2,7 +2,6 @@
 using TradeEstimator.Conf;
 using TradeEstimator.Data;
 using TradeEstimator.Log;
-using TradeEstimator.Trade;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TradeEstimator.Test
+namespace TradeEstimator.Trade
 {
     public class Tester
     {
@@ -29,7 +28,7 @@ namespace TradeEstimator.Test
 
         List<Quotes> instr_quotes_list;
 
-       // List<List<double>> eq_list;
+        // List<List<double>> eq_list;
 
         //List<Equity> equity_list;
 
@@ -58,7 +57,7 @@ namespace TradeEstimator.Test
 
             //eq_list = new List<List<double>>();
 
-            foreach (String instr in instruments)
+            foreach (string instr in instruments)
             {
                 InstrConfig instr_config = new(instr);
 

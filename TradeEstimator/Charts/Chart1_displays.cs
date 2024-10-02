@@ -5,11 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using TradeEstimator.Conf;
 using TradeEstimator.Data;
-using TradeEstimator.Trade;
 
 namespace TradeEstimator.Charts
 {
-    public partial class Chart2
+    public partial class Chart1
     {
 
         public void displayInstrDataOHLC(InstrConfig instr_config, DaysQuotes days_quotes)
@@ -218,7 +217,7 @@ namespace TradeEstimator.Charts
 
         private void display_line(double[] timeline_, double[] price_, ScottPlot.Color line_color, int line_width)
         {
-            var line_plot = plot2.Plot.Add.Scatter(timeline_, price_);
+            var line_plot = plot1.Plot.Add.Scatter(timeline_, price_);
 
             line_plot.LineStyle.Color = line_color;
 

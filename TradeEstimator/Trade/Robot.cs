@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TradeEstimator.Test
+namespace TradeEstimator.Trade
 {
     public class Robot
     {
@@ -39,11 +39,11 @@ namespace TradeEstimator.Test
             this.trModel = trModel;
             this.instrConfig = instrConfig;
 
-            this.orders = orders;
+            orders = orders;
 
             logger.log_("Robot " + instrConfig.instr_name, 1);
 
-            orders = new List<Order>();   
+            orders = new List<Order>();
             positions = new List<Position>();
             equity = new Equity(instrConfig);
 
@@ -130,7 +130,7 @@ namespace TradeEstimator.Test
 
             while (key)
             {
-               
+
                 foreach (var quotes in daysQuotesList)
                 {
                     //need  prev bar close!
@@ -145,15 +145,7 @@ namespace TradeEstimator.Test
                         if (order.isActive)
                         {
 
-                            if(order.dir == "buy")
-                            {
-
-
-
-
-                            }
-                            
-                            if(order.dir == "sell")
+                            if (order.dir == "buy")
                             {
 
 
@@ -161,14 +153,22 @@ namespace TradeEstimator.Test
 
                             }
 
+                            if (order.dir == "sell")
+                            {
 
 
-                            if(
-                                (bar.high>=order.triggerPrice && bar.low <= order.triggerPrice)
+
+
+                            }
+
+
+
+                            if (
+                                bar.high >= order.triggerPrice && bar.low <= order.triggerPrice
                                 ||
-                                (bar.low >= order.triggerPrice && order.dir=="buy") //??  //prev bar and current bar
+                                bar.low >= order.triggerPrice && order.dir == "buy" //??  //prev bar and current bar
                                 ||
-                                (bar.high <= order.triggerPrice && order.dir == "sell" && order.type == "limit") //???
+                                bar.high <= order.triggerPrice && order.dir == "sell" && order.type == "limit" //???
                                 )
                             {
                                 order.diactivate();
@@ -180,7 +180,7 @@ namespace TradeEstimator.Test
 
                 time = time.AddMinutes(timeInc);
 
-                if(DateTime.Compare(time4, time) > 0)
+                if (DateTime.Compare(time4, time) > 0)
                 {
                     key = false;
                 }
@@ -192,7 +192,7 @@ namespace TradeEstimator.Test
 
         private void createOrders(InputSet inputSet, DateTime time1, DateTime time2)
         {
-            foreach(var set in inputSet.inputList)
+            foreach (var set in inputSet.inputList)
             {
                 string id = set.type + " " + set.dir + " " + set.instr + " " + set.size.ToString() + " tr:" + set.triggerPrice.ToString() + " tp:" + set.tpPrice.ToString() + " sl:" + set.slPrice.ToString();
                 Order order = new(set.instr, set.dir, set.size, set.type, set.triggerPrice, set.tpPrice, set.slPrice, set.bePrice, time1, time2, id);
@@ -202,7 +202,7 @@ namespace TradeEstimator.Test
 
 
 
-      
+
 
     }
 }

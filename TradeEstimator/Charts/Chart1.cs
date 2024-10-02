@@ -18,11 +18,11 @@ using ScottPlot.Control;
 
 namespace TradeEstimator.Charts
 {
-    public partial class Chart2
+    public partial class Chart1
     {
         Form1 f1;
 
-        FormsPlot plot2;
+        FormsPlot plot1;
 
         Config config;
         InstrConfig instr_config;
@@ -96,7 +96,7 @@ namespace TradeEstimator.Charts
         string markLabel;
 
 
-        public Chart2(Config config, Logger logger)
+        public Chart1(Config config, Logger logger)
         {
             this.config = config;
 
@@ -104,7 +104,7 @@ namespace TradeEstimator.Charts
 
             f1 = Application.OpenForms["Form1"] as Form1;
 
-            plot2 = Application.OpenForms["Form1"].Controls.Find("plot2", true)[0] as FormsPlot;
+            plot1 = Application.OpenForms["Form1"].Controls.Find("plot1", true)[0] as FormsPlot;
 
             chart_background_color = f1.backgroundColor1Hex;
             chart_axes_color = f1.foregroundColor1Hex;
@@ -140,24 +140,24 @@ namespace TradeEstimator.Charts
             entry_level_width = 3;
             exit_level_width = 1;
 
-            plot2.Plot.FigureBackground.Color = chart_background_color;
-            plot2.Plot.DataBackground.Color = chart_background_color;
-            plot2.Plot.Axes.Color(chart_axes_color);
+            plot1.Plot.FigureBackground.Color = chart_background_color;
+            plot1.Plot.DataBackground.Color = chart_background_color;
+            plot1.Plot.Axes.Color(chart_axes_color);
 
-            plot2.Plot.Layout.Frameless();
+            plot1.Plot.Layout.Frameless();
 
-            plot2.Plot.ScaleFactor = 1;
+            plot1.Plot.ScaleFactor = 1;
 
             //plot2.Plot.Benchmark.IsVisible = false;
 
-            var interaction = plot2.Interaction as Interaction;
+            var interaction = plot1.Interaction as Interaction;
             if (interaction is not null)
             {
                 interaction.Actions.ToggleBenchmark = delegate { };
             }
 
 
-            plot2.Visible = true;
+            plot1.Visible = true;
 
 
             displayed_x_range = 0.01;
@@ -184,19 +184,19 @@ namespace TradeEstimator.Charts
 
         public void set_chart_limits()
         {
-            plot2.Plot.Axes.SetLimits(x_min, x_max, y_min, y_max);
+            plot1.Plot.Axes.SetLimits(x_min, x_max, y_min, y_max);
         }
 
 
         public void set_chart_limits_y()
         {
-            plot2.Plot.Axes.SetLimitsY(y_min, y_max);
+            plot1.Plot.Axes.SetLimitsY(y_min, y_max);
         }
 
 
         public void set_chart_limits_x()
         {
-            plot2.Plot.Axes.SetLimitsX(x_min, x_max);
+            plot1.Plot.Axes.SetLimitsX(x_min, x_max);
         }
 
 
@@ -209,7 +209,7 @@ namespace TradeEstimator.Charts
 
         public void reset()
         {
-            plot2.Plot.Clear();
+            plot1.Plot.Clear();
             reset_chart_limits();
         }
 
@@ -233,7 +233,7 @@ namespace TradeEstimator.Charts
             double[] v_timeline_ = { markX, markX };
             double[] v_price_ = { y_min - displayed_y_range * y_delta, y_max + displayed_y_range * y_delta };
 
-            var mark_vline = plot2.Plot.Add.Scatter(v_timeline_, v_price_);
+            var mark_vline = plot1.Plot.Add.Scatter(v_timeline_, v_price_);
 
             mark_vline.Color = mark_color;
             mark_vline.MarkerStyle = ScottPlot.MarkerStyle.None;
@@ -273,7 +273,7 @@ namespace TradeEstimator.Charts
         {
             //string s = f1.getactiveIndicatorName();
             string s = "Annotation";
-            var anno = plot2.Plot.Add.Annotation(s);
+            var anno = plot1.Plot.Add.Annotation(s);
             anno.LabelFontSize = 24;
             anno.LabelFontName = Fonts.Sans;
             anno.LabelBackgroundColor = Colors.Transparent;
@@ -281,8 +281,8 @@ namespace TradeEstimator.Charts
             anno.LabelBorderColor = Colors.Transparent;
             anno.LabelBorderWidth = 0;
             anno.LabelShadowColor = Colors.Transparent;
-            anno.OffsetY = plot2.Height - 40;
-            anno.OffsetX = (int)Math.Abs(plot2.Width * 0.75);
+            anno.OffsetY = plot1.Height - 40;
+            anno.OffsetX = (int)Math.Abs(plot1.Width * 0.75);
         }
 
 

@@ -27,8 +27,6 @@ namespace TradeEstimator.Conf
 
         //Targets
 
-        public int adr_period;
-
         //percent of ADR
         public int half_range_adrp;
 
@@ -90,8 +88,6 @@ namespace TradeEstimator.Conf
 
 
             //Targets
-
-            adr_period = int.Parse(INI.Read("adr_period", "Targets").Trim(), System.Globalization.CultureInfo.InvariantCulture);
 
             half_range_adrp = int.Parse(INI.Read("half_range_adrp", "Targets").Trim(), System.Globalization.CultureInfo.InvariantCulture);
 

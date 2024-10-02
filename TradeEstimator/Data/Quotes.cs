@@ -202,7 +202,7 @@ namespace TradeEstimator.Data
             Double[] dayDR = new Double[n];
             Double[] dayADR = new Double[n];
 
-            calc_adr(tr_model, day1, day2);
+            calc_adr(config.adr_period, day1, day2);
 
             int j = 0;
             for (int i = index1; i <= index2; i++)
@@ -269,11 +269,9 @@ namespace TradeEstimator.Data
 
 
 
-        private void calc_adr(TradeModel tr_model, DateTime day1, DateTime day2)
+        private void calc_adr(int adr_period, DateTime day1, DateTime day2)
         {
             ADR = new double[Timeline.Length];
-
-            int adr_period = tr_model.adr_period;
 
             DateTime sd = day1.AddDays(-1);
             DateTime ed = day2.AddDays(-1);

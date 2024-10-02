@@ -1,6 +1,5 @@
 ﻿using TradeEstimator.Charts;
 using TradeEstimator.Conf;
-using TradeEstimator.Data;
 using TradeEstimator.Log;
 using ScottPlot;
 using System;
@@ -10,13 +9,15 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TradeEstimator.Conf;
+using TradeEstimator.Data;
+using TradeEstimator.Log;
 
-namespace TradeEstimator.Trade
+namespace TradeEstimator.Data
 {
     public class Grids
     {
         Config config;
-        TradeModel tr_model;
         Logger logger;
 
         double half_range; //in real price
@@ -41,6 +42,8 @@ namespace TradeEstimator.Trade
 
         DaysQuotes Bars;
 
+
+        /*
         int min_duration1_;
         int min_duration2_;
 
@@ -48,16 +51,15 @@ namespace TradeEstimator.Trade
         int half_range_adrp;
         int th_adrp;
         int tp_adrp;
-
+        */
 
         List<Gridset> Grids_list;
         public Gridset[] gridSets;
 
 
-        public Grids(Config config, Logger logger, TradeModel tr_model, DaysQuotes days_quotes, DateTime date1, DateTime date2)
+        public Grids(Config config, Logger logger, DaysQuotes days_quotes, DateTime date1, DateTime date2)
         {
             this.config = config;
-            this.tr_model = tr_model;
             this.logger = logger;
             Bars = days_quotes;
 
@@ -65,12 +67,7 @@ namespace TradeEstimator.Trade
 
             Grids_list = new List<Gridset>();
 
-            time1 = tr_model.time1;
-            time2 = tr_model.time2;
-
-            min_duration1_ = tr_model.min_duration1;
-            min_duration2_ = tr_model.min_duration2;
-
+            /*
             tf = config.tf;
 
             half_range_adrp = tr_model.half_range_adrp;
@@ -78,9 +75,7 @@ namespace TradeEstimator.Trade
             th_adrp = tr_model.th_adrp;
 
             tp_adrp = tr_model.tp_adrp;
-
-            minduration1 = (int)Math.Ceiling((double)min_duration1_ / tf);
-            minduration2 = (int)Math.Ceiling((double)min_duration2_ / tf);
+            */
 
             index1 = -1;
             index2 = -1;
@@ -106,7 +101,7 @@ namespace TradeEstimator.Trade
 
             DayOfWeek bar_wday = Bars.Timeline[index].DayOfWeek;
 
-            if (index1 < 0 && (bar_wday != DayOfWeek.Saturday && bar_wday != DayOfWeek.Friday))
+            if (index1 < 0 && bar_wday != DayOfWeek.Saturday && bar_wday != DayOfWeek.Friday)
             {
                 if (TimeSpan.Compare(bar_time, time1) >= 0)
                 {
@@ -128,11 +123,7 @@ namespace TradeEstimator.Trade
 
                         if (adr > 0)
                         {
-                            half_range = half_range_adrp * adr / 100;
-                            th = th_adrp * adr / 100;
-                            tp = tp_adrp * adr / 100;
-
-                            Gridset gridset = new("trade_grid", index1, index2, Bars, half_range);
+                            Gridset gridset = new("trade_grid", index1, index2, Bars, adr);
                             Grids_list.Add(gridset);
                             Application.DoEvents();
                         }

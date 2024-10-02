@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TradeEstimator.Test
+namespace TradeEstimator.Trade
 {
     public class Position
     {
@@ -72,14 +72,14 @@ namespace TradeEstimator.Test
 
         private void enterPos(Order order, Bar bar)
         {
-            if (DateTime.Compare(bar.time, timeB) >= 0 || (DateTime.Compare(bar.time, timeA) < 0))
+            if (DateTime.Compare(bar.time, timeB) >= 0 || DateTime.Compare(bar.time, timeA) < 0)
             {
                 return;
             }
 
             entryPrice = order.triggerPrice + calculateSlippage(bar, order.triggerPrice);
             entryTime = bar.time;
-           
+
             size = order.size;
 
             takeProfitPrice = order.tpPrice;
@@ -92,13 +92,13 @@ namespace TradeEstimator.Test
 
         private double calculateSlippage(Bar bar, double price)
         {
-            if(!isOpen) return 0;
+            if (!isOpen) return 0;
 
             double slippage;
 
 
             //Gaps support - - -
-            if(price > bar.high)
+            if (price > bar.high)
             {
                 price = bar.high;
             }
@@ -116,13 +116,13 @@ namespace TradeEstimator.Test
 
             Random random = new();
 
-            if(random.NextDouble() >= 0.5)
+            if (random.NextDouble() >= 0.5)
             {
                 slippage = buy_slippage;
             }
             else
             {
-                slippage = sell_slippage;   
+                slippage = sell_slippage;
             }
 
             slippage *= random.NextDouble();
@@ -137,7 +137,7 @@ namespace TradeEstimator.Test
 
             profit = calculateProfit(bar, bar.close);
 
-            if(DateTime.Compare(bar.time, timeC) >=0)
+            if (DateTime.Compare(bar.time, timeC) >= 0)
             {
                 exitPos(bar, bar.open);
             }
@@ -176,7 +176,7 @@ namespace TradeEstimator.Test
         }
 
 
-        private void exitPos(Bar bar, double price) 
+        private void exitPos(Bar bar, double price)
         {
             if (!isOpen) return;
 
@@ -213,7 +213,7 @@ namespace TradeEstimator.Test
 
             double slippage = calculateSlippage(bar, price);
 
-            return size *((price - entryPrice) * idir - ispread + slippage) / tick;
+            return size * ((price - entryPrice) * idir - ispread + slippage) / tick;
 
             //ATTENTION: result in POINTS, no conversion to account currency (yet)
         }
