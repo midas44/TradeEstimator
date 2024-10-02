@@ -28,11 +28,21 @@ namespace TradeEstimator.Main
 
         public void outputData2()
         {
-            chart2.displayInstrDataOHLC(instrConfig, daysQuotes);
 
-            chart2.display_grids(daysQuotes, instrGrids.gridSets, displayDate1, displayDate2);
+            if (timerange == "year")
+            {
+                chart2.displayInstrDataHL(instrConfig, daysQuotes);
 
-            //chart2.finalize();
+                chart2.display_grids_light(daysQuotes, instrGrids.gridSets, displayDate1, displayDate2);
+            }
+            else
+            {
+                chart2.displayInstrDataOHLC(instrConfig, daysQuotes);
+
+                chart2.display_grids(daysQuotes, instrGrids.gridSets, displayDate1, displayDate2);
+            }
+
+            chart2.finalize();
         }
 
 

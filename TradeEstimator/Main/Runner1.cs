@@ -91,11 +91,19 @@ namespace TradeEstimator.Main
                     break;
 
                 case "week":
-                    timeDelta = TimeSpan.FromDays(7);
+                    timeDelta = TimeSpan.FromDays(6);
+                    break;
+
+                case "2 weeks":
+                    timeDelta = TimeSpan.FromDays(12);
                     break;
 
                 case "month":  //TO DO: make calendar month, not 4 weeks
                     timeDelta = TimeSpan.FromDays(26);
+                    break;
+
+                case "year":
+                    timeDelta = TimeSpan.FromDays(361);
                     break;
             }
         }
@@ -172,6 +180,18 @@ namespace TradeEstimator.Main
         }
 
 
+        private DateTime goYearLastDay(DateTime day)
+        {
+            return goYearFirstDay(day).AddYears(1).AddHours(-12);
+        }
+
+
+        private DateTime goYearFirstDay(DateTime day)
+        {
+            return new DateTime(day.Year, 1, 1);
+        }
+
+
         private void setDisplayDates()
         {
             f1.set_date1(displayDate1);
@@ -242,6 +262,30 @@ namespace TradeEstimator.Main
                 d1 = goPrevWeekDay(d2, DayOfWeek.Monday); //Maybe Sunday???
             }
 
+            if (timerange == "2 weeks")
+            {
+
+                if(displayDate1 == config.date1.Date)
+                {
+                    d1 = displayDate1.Date;
+
+                    d1 = goPrevWeekDay(d1, DayOfWeek.Monday);
+                    d2 = goNextWeekDay(d1, DayOfWeek.Friday);
+
+                    d2 = goNextWeekDay(d2, DayOfWeek.Monday);
+                    d2 = goNextWeekDay(d2, DayOfWeek.Friday); //second week forward
+                }
+                else
+                {
+                    d2 = goNextWeekDay(d2, DayOfWeek.Friday);
+                    d1 = goPrevWeekDay(d2, DayOfWeek.Monday); 
+
+                    d1 = goPrevWeekDay(d1, DayOfWeek.Friday);
+                    d1 = goPrevWeekDay(d1, DayOfWeek.Monday); //second week back
+                }
+
+            }
+
             if (timerange == "month")
             {
                 d2 = goMonthLastDay(d2);
@@ -256,6 +300,26 @@ namespace TradeEstimator.Main
                     d1 = goNextWeekDay(d1, DayOfWeek.Monday); //Maybe Sunday???
                 }
             }
+
+
+            if (timerange == "year")
+            {
+                d2 = goYearLastDay(d2);
+                d2 = assureDayInRange(d2);
+
+                if (isWeekend(d2))
+                {
+                    d2 = goPrevWeekDay(d2, DayOfWeek.Friday);
+                }
+
+                d1 = goYearFirstDay(d2);
+                if (isWeekend(d1))
+                {
+                    d1 = goNextWeekDay(d1, DayOfWeek.Monday); 
+                }
+            }
+
+
 
             if (checkDayInRange(d1) && checkDayInRange(d2))
             {
@@ -284,6 +348,26 @@ namespace TradeEstimator.Main
         }
 
 
+        private DateTime assureDayInRange(DateTime day)
+        {
+            if (DateTime.Compare(config.date1.Date, day.Date) <= 0 && DateTime.Compare(day.Date, config.date2.Date) <= 0)
+            {
+                return day;
+            }
+            else
+            {
+                if (DateTime.Compare(config.date1.Date, day.Date) > 0)
+                {
+                    return config.date1.Date;
+                }
+                else
+                {
+                    return config.date2.Date;
+                }
+            }
+        }
+
+
         public void goFirstPeriod()
         {
             Application.DoEvents();
@@ -298,11 +382,17 @@ namespace TradeEstimator.Main
                 displayDate2 = displayDate1;
             }
 
+            if (timerange == "year")
+            {
+                displayDate1 = assureDayInRange(displayDate1);
+                displayDate2 = assureDayInRange(displayDate2);
+            }
 
             setPeriod();
 
             setDisplayDates();
         }
+
 
         public void goLastPeriod()
         {
@@ -312,10 +402,19 @@ namespace TradeEstimator.Main
 
             displayDate2 = config.date2.Date;
 
+            displayDate1 = displayDate2.Add(-timeDelta);
+
+            if (timerange == "year")
+            {
+                displayDate1 = assureDayInRange(displayDate1);
+                displayDate2 = assureDayInRange(displayDate2);
+            }
+
             setPeriod();
 
             setDisplayDates();
         }
+
 
         public void goPrevPeriod()
         {
@@ -352,11 +451,22 @@ namespace TradeEstimator.Main
 
             if (timerange == "week")
             {
-                d2 = goPast(d2, 7); //prev
+                d2 = goPast(d2, 6); //prev
 
                 d2 = goNextWeekDay(d2, DayOfWeek.Friday);
                 d1 = goPrevWeekDay(d2, DayOfWeek.Monday); //Maybe Sunday???
             }
+
+
+            if (timerange == "2 weeks")
+            {
+                d2 = goPast(d2, 12); //prev
+
+                d2 = goNextWeekDay(d2, DayOfWeek.Friday);
+                d1 = goPrevWeekDay(d2, DayOfWeek.Monday); //Maybe Sunday???
+            }
+
+
 
             if (timerange == "month")
             {
@@ -375,13 +485,62 @@ namespace TradeEstimator.Main
                 }
             }
 
-            if (checkDayInRange(d1) && checkDayInRange(d2))
-            {
-                displayDate1 = d1;
-                displayDate2 = d2;
 
-                setDisplayDates();
+            if (timerange == "year")
+            {
+
+                d2 = goYearFirstDay(d2);
+
+                d2 = d2.AddMonths(-1); //prev
+
+                d2 = goYearLastDay(d2);
+                if (isWeekend(d2))
+                {
+                    d2 = goPrevWeekDay(d2, DayOfWeek.Friday);
+                }
+
+                d1 = goYearFirstDay(d2);
+                if (isWeekend(d1))
+                {
+                    d1 = goNextWeekDay(d1, DayOfWeek.Monday); //Maybe Sunday???
+                }
             }
+
+
+            if (timerange != "year")
+            {
+                if (checkDayInRange(d1) && checkDayInRange(d2))
+                {
+                    displayDate1 = d1;
+                    displayDate2 = d2;
+                }
+            }
+            else
+            {
+                if (checkDayInRange(d1))
+                {
+                    displayDate1 = d1;
+                }
+
+                if (checkDayInRange(d2))
+                {
+                    displayDate2 = d2;
+                }
+
+                if (checkDayInRange(d1) || checkDayInRange(d2))
+                {
+                    if (!checkDayInRange(d1))
+                    {
+                        displayDate1 = config.date1.Date;
+                    }
+
+                    if (!checkDayInRange(d2))
+                    {
+                        displayDate2 = config.date2.Date;
+                    }
+                }
+            }
+            setDisplayDates();
         }
 
 
@@ -420,11 +579,21 @@ namespace TradeEstimator.Main
 
             if (timerange == "week")
             {
-                d2 = goFuture(d2, 7); //next
+                d2 = goFuture(d2, 6); //next
 
                 d2 = goPrevWeekDay(d2, DayOfWeek.Friday);
                 d1 = goPrevWeekDay(d2, DayOfWeek.Monday); //Maybe Sunday???
             }
+
+
+            if (timerange == "2 weeks")
+            {
+                d2 = goFuture(d2, 12); //next
+
+                d2 = goPrevWeekDay(d2, DayOfWeek.Friday);
+                d1 = goPrevWeekDay(d2, DayOfWeek.Monday); //Maybe Sunday???
+            }
+
 
             if (timerange == "month")
             {
@@ -443,14 +612,63 @@ namespace TradeEstimator.Main
                 }
             }
 
-            if (checkDayInRange(d1) && checkDayInRange(d2))
-            {
-                displayDate1 = d1;
-                displayDate2 = d2;
 
-                setDisplayDates();
+            if (timerange == "year")
+            {
+                d2 = goYearLastDay(d2);
+
+                d2 = d2.AddMonths(1); //next
+
+                d2 = goYearLastDay(d2);
+                if (isWeekend(d2))
+                {
+                    d2 = goPrevWeekDay(d2, DayOfWeek.Friday);
+                }
+
+                d1 = goYearFirstDay(d2);
+                if (isWeekend(d1))
+                {
+                    d1 = goNextWeekDay(d1, DayOfWeek.Monday); //Maybe Sunday???
+                }
             }
+
+
+            if (timerange != "year")
+            {
+                if (checkDayInRange(d1) && checkDayInRange(d2))
+                {
+                    displayDate1 = d1;
+                    displayDate2 = d2;
+                }
+            }
+            else
+            {
+                if (checkDayInRange(d1))
+                {
+                    displayDate1 = d1;
+                }
+
+                if (checkDayInRange(d2))
+                {
+                    displayDate2 = d2;
+                }
+
+                if (checkDayInRange(d1) || checkDayInRange(d2))
+                {
+                    if (!checkDayInRange(d1))
+                    {
+                        displayDate1 = config.date1.Date;
+                    }
+
+                    if (!checkDayInRange(d2))
+                    {
+                        displayDate2 = config.date2.Date;
+                    }
+                }
+            }
+            setDisplayDates();
         }
+
 
         public void goRandomPeriod()
         {

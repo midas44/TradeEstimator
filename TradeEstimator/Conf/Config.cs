@@ -18,8 +18,6 @@ namespace TradeEstimator.Conf
 
         public string quotes_path;
 
-        public string ml_path;
-
         public string log_path;
 
         public string tsets_path;
@@ -137,7 +135,6 @@ namespace TradeEstimator.Conf
 
             data_path = INI.Read("data_path", "Path").Trim();
             quotes_path = INI.Read("quotes_path", "Path").Trim().Replace("[data_path]", data_path);
-            ml_path = INI.Read("ml_path", "Path").Trim().Replace("[data_path]", data_path);
             log_path = INI.Read("log_path", "Path").Trim().Replace("[data_path]", data_path);
             tsets_path = INI.Read("tsets_path", "Path").Trim().Replace("[data_path]", data_path);
 

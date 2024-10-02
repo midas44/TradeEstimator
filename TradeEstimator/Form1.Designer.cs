@@ -35,6 +35,7 @@
             panel3 = new Panel();
             panel1 = new Panel();
             panel_tr = new Panel();
+            button_rescale = new Button();
             textBox_log = new TextBox();
             panel_tset = new Panel();
             button_tsetDel = new Button();
@@ -45,6 +46,8 @@
             button_tsetPrev = new Button();
             comboBox_tset = new ComboBox();
             panel_labels = new Panel();
+            label7 = new Label();
+            label5 = new Label();
             label12 = new Label();
             label6 = new Label();
             label4 = new Label();
@@ -72,21 +75,17 @@
             dateTimePicker2 = new DateTimePicker();
             dateTimePicker1 = new DateTimePicker();
             checkedListBox_period = new CheckedListBox();
-            panel2 = new Panel();
-            panel_display = new Panel();
-            panel_ind = new Panel();
-            panel_an = new Panel();
             panel0.SuspendLayout();
             panel_chart2.SuspendLayout();
             panel3.SuspendLayout();
             panel1.SuspendLayout();
+            panel_tr.SuspendLayout();
             panel_tset.SuspendLayout();
             panel_labels.SuspendLayout();
             panel_models.SuspendLayout();
             panel_run.SuspendLayout();
             panel_modes.SuspendLayout();
             panel_instr_time.SuspendLayout();
-            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // panel0
@@ -124,10 +123,9 @@
             // panel3
             // 
             panel3.Controls.Add(panel1);
-            panel3.Controls.Add(panel2);
             panel3.Location = new Point(23, 404);
             panel3.Name = "panel3";
-            panel3.Size = new Size(2133, 1318);
+            panel3.Size = new Size(2133, 1085);
             panel3.TabIndex = 30;
             // 
             // panel1
@@ -143,15 +141,32 @@
             panel1.Location = new Point(27, 24);
             panel1.Margin = new Padding(4);
             panel1.Name = "panel1";
-            panel1.Size = new Size(2080, 593);
+            panel1.Size = new Size(2080, 957);
             panel1.TabIndex = 31;
             // 
             // panel_tr
             // 
-            panel_tr.Location = new Point(1064, 411);
+            panel_tr.BackColor = Color.FromArgb(24, 33, 49);
+            panel_tr.Controls.Add(button_rescale);
+            panel_tr.ForeColor = Color.FromArgb(199, 214, 255);
+            panel_tr.Location = new Point(1182, 587);
             panel_tr.Name = "panel_tr";
-            panel_tr.Size = new Size(643, 160);
+            panel_tr.Size = new Size(881, 350);
             panel_tr.TabIndex = 40;
+            // 
+            // button_rescale
+            // 
+            button_rescale.BackColor = Color.FromArgb(24, 33, 49);
+            button_rescale.FlatStyle = FlatStyle.Flat;
+            button_rescale.ForeColor = Color.FromArgb(199, 214, 255);
+            button_rescale.Location = new Point(33, 56);
+            button_rescale.Margin = new Padding(4);
+            button_rescale.Name = "button_rescale";
+            button_rescale.Size = new Size(187, 40);
+            button_rescale.TabIndex = 25;
+            button_rescale.Text = "Rescale";
+            button_rescale.UseVisualStyleBackColor = false;
+            button_rescale.Click += button_rescale_Click;
             // 
             // textBox_log
             // 
@@ -176,7 +191,7 @@
             panel_tset.Controls.Add(comboBox_tset);
             panel_tset.Location = new Point(818, 219);
             panel_tset.Name = "panel_tset";
-            panel_tset.Size = new Size(889, 160);
+            panel_tset.Size = new Size(654, 350);
             panel_tset.TabIndex = 27;
             // 
             // button_tsetDel
@@ -281,16 +296,42 @@
             // 
             // panel_labels
             // 
+            panel_labels.Controls.Add(label7);
+            panel_labels.Controls.Add(label5);
             panel_labels.Controls.Add(label12);
             panel_labels.Controls.Add(label6);
             panel_labels.Controls.Add(label4);
             panel_labels.Controls.Add(label3);
             panel_labels.Controls.Add(label2);
             panel_labels.Controls.Add(label1);
-            panel_labels.Location = new Point(28, 411);
+            panel_labels.Location = new Point(28, 587);
             panel_labels.Name = "panel_labels";
-            panel_labels.Size = new Size(1014, 160);
+            panel_labels.Size = new Size(1132, 350);
             panel_labels.TabIndex = 25;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.FlatStyle = FlatStyle.Flat;
+            label7.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label7.ForeColor = Color.FromArgb(246, 220, 189);
+            label7.Location = new Point(326, 21);
+            label7.Name = "label7";
+            label7.Size = new Size(76, 31);
+            label7.TabIndex = 69;
+            label7.Text = "label7";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.FlatStyle = FlatStyle.Flat;
+            label5.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label5.ForeColor = Color.FromArgb(113, 221, 244);
+            label5.Location = new Point(326, 65);
+            label5.Name = "label5";
+            label5.Size = new Size(76, 31);
+            label5.TabIndex = 68;
+            label5.Text = "label5";
             // 
             // label12
             // 
@@ -310,11 +351,12 @@
             label6.FlatStyle = FlatStyle.Flat;
             label6.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label6.ForeColor = Color.FromArgb(113, 221, 244);
-            label6.Location = new Point(550, 21);
+            label6.Location = new Point(782, 109);
             label6.Name = "label6";
             label6.Size = new Size(76, 31);
             label6.TabIndex = 66;
             label6.Text = "label6";
+            label6.Visible = false;
             // 
             // label4
             // 
@@ -322,7 +364,7 @@
             label4.FlatStyle = FlatStyle.Flat;
             label4.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label4.ForeColor = Color.FromArgb(179, 146, 240);
-            label4.Location = new Point(550, 62);
+            label4.Location = new Point(782, 65);
             label4.Name = "label4";
             label4.Size = new Size(76, 31);
             label4.TabIndex = 65;
@@ -334,7 +376,7 @@
             label3.FlatStyle = FlatStyle.Flat;
             label3.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label3.ForeColor = Color.FromArgb(249, 117, 131);
-            label3.Location = new Point(314, 21);
+            label3.Location = new Point(782, 21);
             label3.Name = "label3";
             label3.Size = new Size(76, 31);
             label3.TabIndex = 64;
@@ -509,7 +551,7 @@
             panel_instr_time.Controls.Add(checkedListBox_period);
             panel_instr_time.Location = new Point(28, 219);
             panel_instr_time.Name = "panel_instr_time";
-            panel_instr_time.Size = new Size(762, 160);
+            panel_instr_time.Size = new Size(762, 350);
             panel_instr_time.TabIndex = 18;
             // 
             // button_reset2
@@ -634,51 +676,20 @@
             checkedListBox_period.CheckOnClick = true;
             checkedListBox_period.ForeColor = Color.FromArgb(199, 214, 255);
             checkedListBox_period.FormattingEnabled = true;
-            checkedListBox_period.Items.AddRange(new object[] { "day", "2 days", "3 days", "week", "month" });
+            checkedListBox_period.Items.AddRange(new object[] { "day", "2 days", "3 days", "week", "2 weeks", "month", "year" });
             checkedListBox_period.Location = new Point(16, 16);
             checkedListBox_period.Name = "checkedListBox_period";
-            checkedListBox_period.Size = new Size(93, 125);
+            checkedListBox_period.Size = new Size(110, 225);
             checkedListBox_period.TabIndex = 7;
             checkedListBox_period.ItemCheck += checkedListBox_period_ItemCheck;
             checkedListBox_period.MouseUp += checkedListBox_period_MouseUp;
-            // 
-            // panel2
-            // 
-            panel2.Controls.Add(panel_display);
-            panel2.Controls.Add(panel_ind);
-            panel2.Controls.Add(panel_an);
-            panel2.Location = new Point(27, 643);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(2080, 650);
-            panel2.TabIndex = 30;
-            // 
-            // panel_display
-            // 
-            panel_display.Location = new Point(186, 401);
-            panel_display.Name = "panel_display";
-            panel_display.Size = new Size(1867, 160);
-            panel_display.TabIndex = 32;
-            // 
-            // panel_ind
-            // 
-            panel_ind.Location = new Point(186, 224);
-            panel_ind.Name = "panel_ind";
-            panel_ind.Size = new Size(1867, 160);
-            panel_ind.TabIndex = 31;
-            // 
-            // panel_an
-            // 
-            panel_an.Location = new Point(186, 43);
-            panel_an.Name = "panel_an";
-            panel_an.Size = new Size(841, 160);
-            panel_an.TabIndex = 30;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(24, 33, 49);
-            ClientSize = new Size(2186, 1754);
+            ClientSize = new Size(2186, 1515);
             Controls.Add(panel0);
             Controls.Add(panel3);
             Font = new Font("Segoe UI", 10F);
@@ -692,6 +703,7 @@
             panel3.ResumeLayout(false);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            panel_tr.ResumeLayout(false);
             panel_tset.ResumeLayout(false);
             panel_labels.ResumeLayout(false);
             panel_labels.PerformLayout();
@@ -700,7 +712,6 @@
             panel_run.PerformLayout();
             panel_modes.ResumeLayout(false);
             panel_instr_time.ResumeLayout(false);
-            panel2.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -748,11 +759,10 @@
         private DateTimePicker dateTimePicker2;
         private DateTimePicker dateTimePicker1;
         private CheckedListBox checkedListBox_period;
-        private Panel panel2;
-        private Panel panel_display;
-        private Panel panel_ind;
-        private Panel panel_an;
         private Panel panel_tr;
         private Label label12;
+        private Label label5;
+        private Label label7;
+        private Button button_rescale;
     }
 }

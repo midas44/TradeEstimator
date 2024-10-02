@@ -39,6 +39,7 @@ namespace TradeEstimator.Trade
 
             price_daybreak[0] = Bars.Open[daybreak_index] - 3 * half_range;
             price_daybreak[1] = Bars.Open[daybreak_index] + 3 * half_range;
+
         }
     }
 

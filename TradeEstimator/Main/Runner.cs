@@ -132,15 +132,18 @@ namespace TradeEstimator.Main
 
         private void finalize2()
         {
-            chart2.setMark(0, f1.getChart2MarkY());
+            chart2.setMark(f1.getChart2MarkX(),0); //debug disabled
             //f1.showTrack2();
             f1.showMark2();
-            chart2.mark();
+              chart2.mark(); //debug disabled
 
             if (chart2_rescale_key) //only on run event
             {
-                f1.chart2XRange = 3.0;
-                f1.set_chart2_scale_x();
+                f1.chart2YRange = 3.0;
+
+                f1.set_chart2_scale_xy();
+                
+
 
                 chart2_rescale_key = false;
             }

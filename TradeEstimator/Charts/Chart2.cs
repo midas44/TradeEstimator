@@ -3,26 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TradeEstimator;
-using TradeEstimator.Data;
 using System.Globalization;
 using ScottPlot.WinForms;
-using TradeEstimator.Conf;
 using ScottPlot;
 using ScottPlot.Plottables;
-using TradeEstimator.Trade;
-using System.Diagnostics.Metrics;
+
+using ScottPlot.TickGenerators;
+using TradeEstimator.Conf;
+using TradeEstimator.Data;
 using TradeEstimator.Log;
-using Color = ScottPlot.Color;
+using TradeEstimator.Trade;
+using TradeEstimator;
+using ScottPlot.Control;
 
 namespace TradeEstimator.Charts
 {
     public partial class Chart2
     {
         Form1 f1;
+
         FormsPlot plot2;
 
         Config config;
+        InstrConfig instr_config;
+        TradeModel tr_model;
         Logger logger;
 
         ScottPlot.Color chart_background_color;
@@ -45,7 +49,7 @@ namespace TradeEstimator.Charts
 
         ScottPlot.Color mark_color;
 
-        //ScottPlot.Color invisible_color;
+        ScottPlot.Color invisible_color;
 
         int ohlc_width;
         int hilo_width;
@@ -61,43 +65,41 @@ namespace TradeEstimator.Charts
         double x_min;
         double x_max;
 
-        double x0_min;
-        double x0_max;
-
-        double[] scale_x1;
-        double[] scale_x2;
-
         double y_min;
         double y_max;
 
+        public DaysQuotes days_quotes;
+
+        public string price_format;
+
         int n;
 
+        double displayed_x_range;
         double displayed_y_range;
-
-        public int absGround;
-
-        public int realGround;
-
 
         public DateTime[] timeline;
 
         public double[] ADR;
+        public double[] Open;
+        public double[] Close;
+        public double[] High;
+        public double[] Low;
+        public double[] Volume;
 
-        public double instrTick;
+        public double instr_tick;
 
-        public string instrPriceFormat;
+        public string instr_price_format;
 
-        double markX; 
+        double markX;
         double markY;
 
         string markLabel;
 
 
-
-
         public Chart2(Config config, Logger logger)
         {
             this.config = config;
+
             this.logger = logger;
 
             f1 = Application.OpenForms["Form1"] as Form1;
@@ -111,25 +113,20 @@ namespace TradeEstimator.Charts
             hilo_color = f1.foregroundColor4Hex;
             ohlc_color = f1.foregroundColor4Hex;
 
-            daybreak_color = ScottPlot.Color.FromHex("#C7C9E4").WithOpacity(0.5);
+            daybreak_color = ScottPlot.Color.FromHex("#C7C9E4").WithOpacity(0.25);
             weekbreak_color = ScottPlot.Color.FromHex("#C7C9E4").WithOpacity(0.5);
 
-            targets_grid1_color = ScottPlot.Color.FromHex("#98D6E0").WithOpacity(0.25); //#98D6E0
-            targets_grid2_color = ScottPlot.Color.FromHex("#F892F8").WithOpacity(0.25); //#F892F8
-            targets_rev_buy_color = ScottPlot.Colors.Blue.WithOpacity(0.5);
-            targets_rev_sell_color = ScottPlot.Colors.Red.WithOpacity(0.5);
+            targets_grid1_color = ScottPlot.Color.FromHex("#98D6E0").WithOpacity(0.25);
+            targets_grid2_color = ScottPlot.Color.FromHex("#F892F8").WithOpacity(0.25);
+            targets_rev_buy_color = ScottPlot.Colors.Blue;
+            targets_rev_sell_color = ScottPlot.Colors.Red;
 
             h_track_color = ScottPlot.Colors.Silver.WithOpacity(0.3);
             v_track_color = ScottPlot.Colors.Silver.WithOpacity(0.3);
 
-            //mark_color = ScottPlot.Color.FromHex("#00C8C8");
-
-            //mark_color = ScottPlot.Colors.GreenYellow;
-
             mark_color = f1.highlightColor2Hex;
 
-            //invisible_color = ScottPlot.Colors.Magenta.WithOpacity(0);
-
+            invisible_color = ScottPlot.Colors.Magenta.WithOpacity(0);
 
             ohlc_width = 1;
             hilo_width = 1;
@@ -145,20 +142,26 @@ namespace TradeEstimator.Charts
 
             plot2.Plot.FigureBackground.Color = chart_background_color;
             plot2.Plot.DataBackground.Color = chart_background_color;
-
             plot2.Plot.Axes.Color(chart_axes_color);
+
+            plot2.Plot.Layout.Frameless();
+
+            plot2.Plot.ScaleFactor = 1;
+
+            //plot2.Plot.Benchmark.IsVisible = false;
+
+            var interaction = plot2.Interaction as Interaction;
+            if (interaction is not null)
+            {
+                interaction.Actions.ToggleBenchmark = delegate { };
+            }
+
 
             plot2.Visible = true;
 
 
-            plot2.Plot.ScaleFactor = 1;
-
-            displayed_y_range = 0.01;
-
-            scale_x1 = new double[9]; //0..8 - level grounds, 9 - real price high/low //???
-            scale_x2 = new double[9];
-
-            plot2.Plot.Benchmark.IsVisible = false;
+            displayed_x_range = 0.01;
+            displayed_y_range = 0.1;
 
             timeline = new DateTime[2];
             timeline[0] = config.date1;
@@ -167,66 +170,46 @@ namespace TradeEstimator.Charts
             setup();
         }
 
-        //-----------------------------------------------------------------------------------------------------------------------
-
-        public void clear()
-        {
-            plot2.Plot.Clear();
-            Application.DoEvents();
-        }
 
 
         private void reset_chart_limits()
         {
-            x_min = 9999999;
-            x_max = -9999999;
+            x_min = 999999;
+            x_max = -999999;
+
+            y_min = 999999;
+            y_max = -999999;
         }
 
 
-        public void set_chart_limits_x(double chart2XRange)
+        public void set_chart_limits()
         {
-            double x_delta = x0_max - x0_min;
-
-            x_max = x0_max + chart2XRange * x_delta;
-            x_min = x0_min - chart2XRange * x_delta;
+            plot2.Plot.Axes.SetLimits(x_min, x_max, y_min, y_max);
         }
 
 
-        public void set_chart_limits_x_scale(int scale_number)
-        {
-            if (scale_number == -1)
-            {
-                plot2.Plot.Axes.SetLimits(x_min, x_max, y_min, y_max);
-            }
-            else
-            {
-                plot2.Plot.Axes.SetLimits(scale_x1[scale_number], scale_x2[scale_number], y_min, y_max);
-            }
-        }
-
-
-        public void set_chart_y_scale()
+        public void set_chart_limits_y()
         {
             plot2.Plot.Axes.SetLimitsY(y_min, y_max);
+        }
+
+
+        public void set_chart_limits_x()
+        {
+            plot2.Plot.Axes.SetLimitsX(x_min, x_max);
         }
 
 
         private void setup()
         {
             f1.show_panelB();
-
             reset();
-
-            //f1.Refresh();
-
-            Application.DoEvents();
         }
 
 
         public void reset()
         {
             plot2.Plot.Clear();
-
             reset_chart_limits();
         }
 
@@ -244,57 +227,31 @@ namespace TradeEstimator.Charts
         }
 
 
-
-        public void finalize()
+        public void mark()
         {
-            createAnnotation();
+            double y_delta = y_max - y_min;
+            double[] v_timeline_ = { markX, markX };
+            double[] v_price_ = { y_min - displayed_y_range * y_delta, y_max + displayed_y_range * y_delta };
 
-            f1.Refresh();
+            var mark_vline = plot2.Plot.Add.Scatter(v_timeline_, v_price_);
+
+            mark_vline.Color = mark_color;
+            mark_vline.MarkerStyle = ScottPlot.MarkerStyle.None;
+            mark_vline.LineStyle.Width = mark_width;
+
+            /*
+            double x_delta = x_max - x_min;
+            double[] h_timeline_ = { x_min - 2 * x_delta, x_max + 2 * x_delta };
+            double[] h_price_ = { markY, markY };
+
+
+            var mark_hline = plot2.Plot.Add.Scatter(h_timeline_, h_price_);
+
+            mark_hline.Color = mark_color;
+            mark_hline.MarkerStyle = ScottPlot.MarkerStyle.None;
+            mark_hline.LineStyle.Width = mark_width;
+            */
         }
-
-
-        private void createAnnotation()
-        {
-            string s = "Annotation here";
-            var anno = plot2.Plot.Add.Annotation(s);
-            anno.LabelFontSize = 28;
-            anno.LabelFontName = Fonts.Sans;
-            anno.LabelBackgroundColor = Colors.Transparent;
-            anno.LabelFontColor = Colors.LimeGreen;
-            anno.LabelBorderColor = Colors.Transparent;
-            anno.LabelBorderWidth = 0;
-            anno.LabelShadowColor = Colors.Transparent;
-            anno.OffsetY = plot2.Height - 40;
-            anno.OffsetX = (int)Math.Abs(plot2.Width * 0.75);
-        }
-
-
-
-        //-----------------------------------------------------------------------------------------------------------------------
-
-        public void set_chart_y_autoscale()
-        {
-
-            plot2.Plot.Axes.AutoScaleExpandY();
-
-        }
-
-
-        public void set_chart_x_autoscale()
-        {
-
-            plot2.Plot.Axes.AutoScaleExpandX();
-
-        }
-
-
-        public void set_chart_y_limits()
-        {
-
-            plot2.Plot.Axes.Left.Min = y_min;
-            plot2.Plot.Axes.Left.Max = y_max;
-        }
-
 
 
         public void setMark(double x, double y)
@@ -304,36 +261,29 @@ namespace TradeEstimator.Charts
         }
 
 
-        public void mark()
+
+        public void finalize()
         {
-            /*
-            foreach (ScottPlot.Plottables.Scatter line in plot2.Plot.PlottableList)
-            {
-                if (line.Color == mark_color)
-                {
-                    //line.Color = chart_background_color;
-                    //line.IsVisible = false;
-                    line.Color = invisible_color;
-
-                }
-            }
-            */
-
-            double x_delta = x_max - x_min;
-            double[] h_timeline_ = { x_min - 2 * x_delta, x_max + 2 * x_delta };
-            double[] h_price_ = { markY, markY };
-
-            var mark_hline = plot2.Plot.Add.Scatter(h_timeline_, h_price_);
-
-            mark_hline.Color = mark_color;
-            mark_hline.MarkerStyle = ScottPlot.MarkerStyle.None;
-            mark_hline.LineStyle.Width = mark_width;
-
- 
-            //f1.Refresh();
+            createAnnotation();
+            f1.Refresh();
         }
 
 
+        private void createAnnotation()
+        {
+            //string s = f1.getactiveIndicatorName();
+            string s = "Annotation";
+            var anno = plot2.Plot.Add.Annotation(s);
+            anno.LabelFontSize = 24;
+            anno.LabelFontName = Fonts.Sans;
+            anno.LabelBackgroundColor = Colors.Transparent;
+            anno.LabelFontColor = Colors.LimeGreen;
+            anno.LabelBorderColor = Colors.Transparent;
+            anno.LabelBorderWidth = 0;
+            anno.LabelShadowColor = Colors.Transparent;
+            anno.OffsetY = plot2.Height - 40;
+            anno.OffsetX = (int)Math.Abs(plot2.Width * 0.75);
+        }
 
 
     }
