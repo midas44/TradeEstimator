@@ -65,6 +65,7 @@ namespace TradeEstimator.Data
             find_dr();
 
             Application.DoEvents();
+
         }
 
 
