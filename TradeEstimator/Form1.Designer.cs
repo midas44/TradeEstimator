@@ -35,7 +35,9 @@
             panel3 = new Panel();
             panel1 = new Panel();
             panel_tr = new Panel();
-            button_rescale = new Button();
+            button_rescale_all = new Button();
+            button_rescale_price = new Button();
+            button_rescale_time = new Button();
             textBox_log = new TextBox();
             panel_tset = new Panel();
             button_tsetDel = new Button();
@@ -147,26 +149,58 @@
             // panel_tr
             // 
             panel_tr.BackColor = Color.FromArgb(24, 33, 49);
-            panel_tr.Controls.Add(button_rescale);
+            panel_tr.Controls.Add(button_rescale_all);
+            panel_tr.Controls.Add(button_rescale_price);
+            panel_tr.Controls.Add(button_rescale_time);
             panel_tr.ForeColor = Color.FromArgb(199, 214, 255);
             panel_tr.Location = new Point(1182, 587);
             panel_tr.Name = "panel_tr";
             panel_tr.Size = new Size(881, 350);
             panel_tr.TabIndex = 40;
             // 
-            // button_rescale
+            // button_rescale_all
             // 
-            button_rescale.BackColor = Color.FromArgb(24, 33, 49);
-            button_rescale.FlatStyle = FlatStyle.Flat;
-            button_rescale.ForeColor = Color.FromArgb(199, 214, 255);
-            button_rescale.Location = new Point(33, 56);
-            button_rescale.Margin = new Padding(4);
-            button_rescale.Name = "button_rescale";
-            button_rescale.Size = new Size(187, 40);
-            button_rescale.TabIndex = 25;
-            button_rescale.Text = "Rescale";
-            button_rescale.UseVisualStyleBackColor = false;
-            button_rescale.Click += button_rescale_Click;
+            button_rescale_all.BackColor = Color.FromArgb(24, 33, 49);
+            button_rescale_all.FlatStyle = FlatStyle.Flat;
+            button_rescale_all.ForeColor = Color.FromArgb(199, 214, 255);
+            button_rescale_all.Location = new Point(27, 21);
+            button_rescale_all.Margin = new Padding(4);
+            button_rescale_all.Name = "button_rescale_all";
+            button_rescale_all.Size = new Size(151, 40);
+            button_rescale_all.TabIndex = 27;
+            button_rescale_all.Text = "Rescale";
+            button_rescale_all.UseVisualStyleBackColor = false;
+            button_rescale_all.Click += button_rescale_all_Click;
+            // 
+            // button_rescale_price
+            // 
+            button_rescale_price.BackColor = Color.FromArgb(24, 33, 49);
+            button_rescale_price.FlatStyle = FlatStyle.Flat;
+            button_rescale_price.ForeColor = Color.FromArgb(199, 214, 255);
+            button_rescale_price.Location = new Point(33, 229);
+            button_rescale_price.Margin = new Padding(4);
+            button_rescale_price.Name = "button_rescale_price";
+            button_rescale_price.Size = new Size(151, 40);
+            button_rescale_price.TabIndex = 26;
+            button_rescale_price.Text = "Rescale Price";
+            button_rescale_price.UseVisualStyleBackColor = false;
+            button_rescale_price.Visible = false;
+            button_rescale_price.Click += button_rescale_price_Click;
+            // 
+            // button_rescale_time
+            // 
+            button_rescale_time.BackColor = Color.FromArgb(24, 33, 49);
+            button_rescale_time.FlatStyle = FlatStyle.Flat;
+            button_rescale_time.ForeColor = Color.FromArgb(199, 214, 255);
+            button_rescale_time.Location = new Point(33, 164);
+            button_rescale_time.Margin = new Padding(4);
+            button_rescale_time.Name = "button_rescale_time";
+            button_rescale_time.Size = new Size(151, 40);
+            button_rescale_time.TabIndex = 25;
+            button_rescale_time.Text = "Rescale Time";
+            button_rescale_time.UseVisualStyleBackColor = false;
+            button_rescale_time.Visible = false;
+            button_rescale_time.Click += button_rescale_time_Click;
             // 
             // textBox_log
             // 
@@ -763,6 +797,8 @@
         private Label label12;
         private Label label5;
         private Label label7;
-        private Button button_rescale;
+        private Button button_rescale_time;
+        private Button button_rescale_price;
+        private Button button_rescale_all;
     }
 }

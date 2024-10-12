@@ -36,6 +36,7 @@ namespace TradeEstimator.Conf
 
         //Trade
 
+        public int leverage;
         public double lot;
         public double spread;
         public double commission;
@@ -105,6 +106,8 @@ namespace TradeEstimator.Conf
 
 
             //Trade
+
+            leverage = int.Parse(INI.Read("leverage", "Trade").Trim(), System.Globalization.CultureInfo.InvariantCulture);
 
             lot = double.Parse(INI.Read("lot", "Trade").Trim(), System.Globalization.CultureInfo.InvariantCulture);
 

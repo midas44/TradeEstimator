@@ -22,6 +22,10 @@ namespace TradeEstimator.Conf
 
         public string tsets_path;
 
+        public string inputs_path;
+
+        public string outputs_path;
+
 
         //Data
 
@@ -35,8 +39,6 @@ namespace TradeEstimator.Conf
         //Chart
 
         public int chart_time_margins;
-
-        //public int points_per_price_point;
 
         public double half_range_adr_exp;
 
@@ -120,6 +122,9 @@ namespace TradeEstimator.Conf
             quotes_path = INI.Read("quotes_path", "Path").Trim().Replace("[data_path]", data_path);
             log_path = INI.Read("log_path", "Path").Trim().Replace("[data_path]", data_path);
             tsets_path = INI.Read("tsets_path", "Path").Trim().Replace("[data_path]", data_path);
+
+            inputs_path = INI.Read("inputs_path", "Path").Trim().Replace("[data_path]", data_path);\
+            outputs_path = INI.Read("outputs_path", "Path").Trim().Replace("[data_path]", data_path);
 
 
             //Data

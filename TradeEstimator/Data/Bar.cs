@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TradeEstimator.Trade
+namespace TradeEstimator.Data
 {
     public class Bar
     {

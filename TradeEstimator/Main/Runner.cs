@@ -135,7 +135,7 @@ namespace TradeEstimator.Main
             {
                 f1.chart1YRange = 3.0;
 
-                f1.set_chart1_scale_xy();
+               // f1.set_chart1_scale_xy();
 
                 chart1_rescale_key = false;
             }

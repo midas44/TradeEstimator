@@ -10,7 +10,7 @@ namespace TradeEstimator.Conf
     public class TradeModel
 
     {
-        public string tr_model_name;
+        public string trModelName;
 
 
         //Time
@@ -18,6 +18,11 @@ namespace TradeEstimator.Conf
         public List<string> times;
 
         public List<TimeOnly> timepoints;
+
+
+        //Data
+
+        public string valueOutputFormat;
 
 
         //Trade
@@ -51,7 +56,7 @@ namespace TradeEstimator.Conf
 
         public TradeModel(string tr_model_name)
         {
-            this.tr_model_name = tr_model_name;
+            this.trModelName = tr_model_name;
 
             IniFile INI = new IniFile("configuration/models/trade/" + tr_model_name + ".ini");
 
@@ -61,6 +66,11 @@ namespace TradeEstimator.Conf
             string[] sss = INI.Read("times", "Time").Trim(' ', ',').Split(',');
 
             //DateTime dt = DateTime.ParseExact(s[0], "yyyyMMdd HHmmss", CultureInfo.InvariantCulture);
+
+
+            //Data
+
+            valueOutputFormat = INI.Read("value_output_format", "Data").Trim();
 
 
 

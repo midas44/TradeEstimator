@@ -1234,9 +1234,37 @@ namespace TradeEstimator
             runner.tradesRun();
         }
 
-        private void button_rescale_Click(object sender, EventArgs e)
+        private void button_rescale_time_Click(object sender, EventArgs e)
         {
 
+            if (noRun) { return; }
+
+
+            if (chart1 != null)
+            {
+                chart1.autoscale_x();
+
+                chart1.finalize();
+            }
+        }
+
+        private void button_rescale_price_Click(object sender, EventArgs e)
+        {
+            if (noRun) { return; }
+
+
+            if (chart1 != null)
+            {
+                //chart1.set_chart_limits_y();
+
+                chart1.autoscale_y();
+
+                chart1.finalize();
+            }
+        }
+
+        private void button_rescale_all_Click(object sender, EventArgs e)
+        {
             if (noRun) { return; }
 
 
@@ -1247,6 +1275,8 @@ namespace TradeEstimator
                 chart1.finalize();
             }
         }
+
+
     }
 
 }

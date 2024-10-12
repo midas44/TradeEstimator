@@ -199,6 +199,25 @@ namespace TradeEstimator.Charts
             plot1.Plot.Axes.SetLimitsX(x_min, x_max);
         }
 
+        public void autoscale_x()
+        {
+            //plot1.Plot.Axes.AutoScaleExpandX();
+            //plot1.Plot.Axes.AutoScaleX();
+            //plot1.Plot.Axes.RectifyX();
+
+            plot1.Plot.Axes.SetLimitsX(plot1.Plot.Axes.GetDataLimits());
+        }
+
+        public void autoscale_y()
+        {
+            //plot1.Plot.Axes.AutoScaleExpandY();
+            //plot1.Plot.Axes.RectifyY();
+
+            plot1.Plot.Axes.SetLimitsY(plot1.Plot.Axes.GetDataLimits());
+
+            //plot1.Plot.Axes.GetDataLimits();
+        }
+
 
         private void setup()
         {

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TradeEstimator.Trade
+namespace TradeEstimator.Trade1
 {
     public class Tester
     {
