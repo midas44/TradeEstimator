@@ -15,76 +15,58 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 
 namespace TradeEstimator.Trade
 {
-    public class Input
+    public class InputTimes
     {
         //params
+
         Config config;
         Logger logger;
         TradeModel trModel;
         string tradeId;
-        string timestamp;
-        string instrument;
-        
+
         //runtime
-        public List<int> size;
-        public List<double> price;
-        public int n;
+        public List<DateTime> itimes;
+        public int n = 0;  
 
 
-        public Input(Config config, Logger logger, TradeModel trModel, string tradeId, string timestamp, string instrument)
+        public InputTimes(Config config, Logger logger, TradeModel trModel, string tradeId)
         {
             this.config = config;
             this.logger = logger;
             this.trModel = trModel;
-            this.timestamp = timestamp;
-            this.instrument = instrument;
             this.tradeId = tradeId;
 
-            timestamp = timestamp.Replace(" ", "_");
-            string year = timestamp.Substring(0, 3);
-            string month = timestamp.Substring(4, 5);
-            string day = timestamp.Substring(6, 7);
-
-            string filePath = config.inputs_path + "/" 
+            string filePath = config.inputs_path + "/"
                 + trModel.trModelName + "/"
                 + tradeId + "/"
-                + year + "/"
-                + month + "/"
-                + day + "/"
-                + timestamp + "/"
-                + instrument + "_"
-                + config.data_timeframe + "." 
+                + "itimes" + "_"
+                + config.data_timeframe + "."
                 + config.data_ext;
 
-            logger.log_("Input: " + filePath, 1);
-
-            size = new();
-            price = new();
+            logger.log_("Input Times: " + filePath, 1);
 
             n = 0;
+
+            itimes = new();
 
             if (File.Exists(filePath))
             {
                 load(filePath);
-                n = price.Count;
-            }
-
+                n = itimes.Count;
+            } 
         }
 
 
         private void load(string path)
         {
             string[] dataset0 = System.IO.File.ReadAllLines(path);
+
             string[] dataset = dataset0.Where(item => item != string.Empty).ToArray();
 
             foreach (string line in dataset)
             {
-                //size; price;
-
-                string[] s = line.Split(';');
-
-                size.Add(int.Parse(s[0].Trim(), CultureInfo.InvariantCulture));
-                price.Add(double.Parse(s[1].Trim(), CultureInfo.InvariantCulture));
+                DateTime t = DateTime.ParseExact(line.Trim(), "yyyyMMdd HHmmss", CultureInfo.InvariantCulture);
+                itimes.Add(t);
             }
         }
 

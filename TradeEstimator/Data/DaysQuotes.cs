@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 
 namespace TradeEstimator.Data
@@ -31,6 +32,8 @@ namespace TradeEstimator.Data
         public double prevHigh;
         public double prevLow;
 
+        public DBar[] dBars;
+
 
         public DaysQuotes(string instrument, DateTime day1, DateTime day2, DateTime[] Timeline, Double[] Open, Double[] High, Double[] Low, Double[] Close, Double[] Volume, Double[] DR, Double[] ADR) 
         {
@@ -52,6 +55,8 @@ namespace TradeEstimator.Data
 
             prevHigh = -1;
             prevLow = -1;
+
+            createDBars();
         }
 
 
@@ -85,6 +90,41 @@ namespace TradeEstimator.Data
             lastIndex = i;
         
             return bar;
+        }
+
+
+
+
+        private void createDBars()
+        {
+            List<DBar> dBars_list = new();
+
+            int n = Timeline.Length;
+            int i = 1; //i always > 0 !!! to avoid some old problem
+            bool key = true;
+
+            while (key)
+            {
+
+                if (DateTime.Compare(Timeline[i], day1) >= 0)
+                {
+
+                    DBar dBar = new(Timeline[i], Open[i], High[i], Low[i], Close[i]);
+                    dBars_list.Add(dBar);
+
+                    if (DateTime.Compare(Timeline[i], day2) >= 0)
+                    {
+                        key = false;
+                    }
+                }
+
+                i++;
+
+                if (i >= n) { key = false; }
+            }
+
+            dBars = dBars_list.ToArray();
+
         }
 
 

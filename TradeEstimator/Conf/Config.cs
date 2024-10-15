@@ -222,13 +222,9 @@ namespace TradeEstimator.Conf
             //Runtime
             //(not in ini file) * * * * * * * * * * * * *
 
-            switch (data_timeframe)
+            switch (data_timeframe.Trim())
             {
                 case "m1":
-                    tf = 1;
-                    break;
-
-                case "m":
                     tf = 1;
                     break;
 
@@ -264,16 +260,24 @@ namespace TradeEstimator.Conf
                     tf = 60;
                     break;
 
-                case "h":
-                    tf = 60;
-                    break;
-
                 case "h2":
                     tf = 120;
                     break;
 
+                case "h3":
+                    tf = 180;
+                    break;
+
                 case "h4":
                     tf = 240;
+                    break;
+
+                case "h6":
+                    tf = 360;
+                    break;
+
+                case "h12":
+                    tf = 720;
                     break;
 
                 default:
@@ -285,6 +289,9 @@ namespace TradeEstimator.Conf
             begin_time_shift_days = 60;
 
         }
+
+
+      
 
     }
 }

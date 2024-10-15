@@ -14,14 +14,8 @@ namespace TradeEstimator.Trade
     {
         //params
         public InstrConfig instrConfig;
-
         public int size;   //lots
-
-        public List<double> equityLine;
-        public List<DateTime> timeLine;
-
-        public double equity;
-
+        public double profit;
         public double lastPrice;
 
         
@@ -29,21 +23,15 @@ namespace TradeEstimator.Trade
         {
             this.instrConfig = instrConfig;
 
-            equityLine = new();
-            timeLine = new();   
-
-            equity = 0;
+            profit = 0;
         }
 
 
         public void update(double price, DateTime time)
         {
-            double deltaEquity = size * instrConfig.leverage * instrConfig.lot  * (price - lastPrice) / instrConfig.instr_tick;
+            double delta = size * instrConfig.leverage * instrConfig.lot  * (price - lastPrice) / instrConfig.instr_tick;
 
-            equity += deltaEquity;
-
-            equityLine.Add(equity);
-            timeLine.Add(time);
+            profit += delta;
 
             lastPrice = price;
         }

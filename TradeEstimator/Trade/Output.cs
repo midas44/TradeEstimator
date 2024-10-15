@@ -12,27 +12,25 @@ namespace TradeEstimator.Trade
 {
     public class Output
     {
-
-
+        //params
         Config config;
         Logger logger;
         TradeModel trModel;
-
+        string tradeId;
         string timestamp;
         string instrument;
-
         public double profit; //percent or abs???
         public double drawdown; //percent  or abs???
         
 
-        public Output(Config config, Logger logger, TradeModel trModel, string timestamp, string instrument, double profit, double drawdown)
+        public Output(Config config, Logger logger, TradeModel trModel, , string tradeId, string timestamp, string instrument, double profit, double drawdown)
         {
             this.config = config;
             this.logger = logger;
             this.trModel = trModel;
+            this.tradeId = tradeId;
             this.timestamp = timestamp;
-            this.instrument = instrument;
-            
+            this.instrument = instrument;        
             this.profit = profit;
             this.drawdown = drawdown;
 
@@ -46,18 +44,18 @@ namespace TradeEstimator.Trade
 
             string filePath = config.outputs_path + "/"
                 + trModel.trModelName + "/"
+                + tradeId + "/"
                 + year + "/"
                 + month + "/"
                 + day + "/"
                 + timestamp + "/"
                 + instrument + "_"
-            + config.data_timeframe + "."
+                + config.data_timeframe + "."
                 + config.data_ext;
 
             logger.log_("Output: " + filePath, 1);
 
             save(filePath);
-
         }
 
 
