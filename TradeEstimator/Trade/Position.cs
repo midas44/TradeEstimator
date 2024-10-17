@@ -16,6 +16,7 @@ namespace TradeEstimator.Trade
         public InstrConfig instrConfig;
         public int size;   //lots
         public double profit;
+        public double drawdown;
         public double lastPrice;
 
         

@@ -21,9 +21,10 @@ namespace TradeEstimator.Trade
         string instrument;
         public double profit; //percent or abs???
         public double drawdown; //percent  or abs???
-        
+        public double exposure; //units?
 
-        public Output(Config config, Logger logger, TradeModel trModel, , string tradeId, string timestamp, string instrument, double profit, double drawdown)
+
+        public Output(Config config, Logger logger, TradeModel trModel, string tradeId, string timestamp, string instrument, double profit, double drawdown, double exposure)
         {
             this.config = config;
             this.logger = logger;
@@ -33,6 +34,7 @@ namespace TradeEstimator.Trade
             this.instrument = instrument;        
             this.profit = profit;
             this.drawdown = drawdown;
+            this.exposure = exposure;
 
             //20101017 195200; 1.3977; 1.3977; 1.3977; 1.3977; 500000
             //DateTime dt = DateTime.ParseExact(s[0], "yyyyMMdd HHmmss", CultureInfo.InvariantCulture);
@@ -61,8 +63,7 @@ namespace TradeEstimator.Trade
 
         public void save(string path)
         {
-
-            string line = profit.ToString(trModel.valueOutputFormat) + "; " + drawdown.ToString(trModel.valueOutputFormat);
+            string line = profit.ToString(trModel.valueOutputFormat) + "; " + drawdown.ToString(trModel.valueOutputFormat) + "; " + exposure.ToString(trModel.valueOutputFormat);
 
             File.AppendAllText(path, line);
             Application.DoEvents();

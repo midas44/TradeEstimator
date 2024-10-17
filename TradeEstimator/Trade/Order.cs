@@ -14,23 +14,25 @@ namespace TradeEstimator.Trade
         public string dir; //BUY, SELL
         public int size;   //lots 
         public double triggerPrice;
+        public string timestamp;
 
         //runtime
         public bool isActive;
 
 
-        public Order(string instr, string dir, int size, double triggerPrice)
+        public Order(string instr, string dir, int size, double triggerPrice, string timestamp)
         {
             this.instr = instr;
             this.dir = dir;
             this.size = size;
             this.triggerPrice = triggerPrice;
+            this.timestamp = timestamp;
 
             isActive = true;
         }
 
 
-        public void diactivate()
+        public void deactivate()
         {
             isActive = false;
         }

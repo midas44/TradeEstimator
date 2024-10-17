@@ -21,18 +21,20 @@ namespace TradeEstimator.Trade
 
         public TradeModel trModel;
 
-        InstrConfig instrConfig;
+        public InstrConfig instrConfig;
 
 
         //runtime
 
-        Position position;
+        public List<Order> orders;
+
+        public Position position;
 
         public List<Event> events;
 
         public List<DateTime> timeLine;
 
-        public List<double> equityLine;
+        public List<double> profitLine;
 
         public List<double> drawdownLine;
 
@@ -55,13 +57,15 @@ namespace TradeEstimator.Trade
 
         private void prepareData()
         {
+            orders = new();
+
             position = new(instrConfig);
 
             events = new();
 
             timeLine = new();
 
-            equityLine = new();
+            profitLine = new();
 
             drawdownLine = new();
 
@@ -70,12 +74,40 @@ namespace TradeEstimator.Trade
 
 
 
-        public void processBar(List<Order> orders, DBar bar)
+        public void processBar(List<Order> newOrders, DBar bar)
         {
+            foreach (Order order in orders) 
+            {
+            
+            
+            }
+
+            //TO DO: position update and change
+
+            recordMetrics();
+        }
 
 
+        public void processLastBar(DBar bar)
+        {
+            foreach (Order order in orders)
+            {
+                order.deactivate(); //need not???
+            }
+
+            //TO DO: position update and close
+
+            recordMetrics();
+        }
 
 
+        private void recordMetrics()
+        {
+            profitLine.Add(position.profit);
+
+            exposureLine.Add(Math.Abs(position.size));
+
+            drawdownLine.Add(position.drawdown);
         }
 
 

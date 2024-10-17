@@ -22,8 +22,8 @@ namespace TradeEstimator.Trade
         Logger logger;
         TradeModel trModel;
         string tradeId;
-        string timestamp;
-        string instrument;
+        public string timestamp;
+        public string instrument;
         
         //runtime
         public List<int> size;
