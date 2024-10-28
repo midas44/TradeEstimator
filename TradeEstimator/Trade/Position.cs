@@ -14,36 +14,86 @@ namespace TradeEstimator.Trade
     {
         //params
         public InstrConfig instrConfig;
-        public int size;   //lots
-        public double profit;
-        public double drawdown;
-        public double lastPrice;
 
-        
-        public Position(InstrConfig instrConfig) 
+        public TradeModel trModel;
+
+
+        //runtime
+
+        public int size;   //lots
+
+        public double lastEquity; 
+
+        public double maxProfit; //all time max
+
+        public double maxLoss; //all time min
+
+        public double drawdown; //loss from maxProfit
+
+        public double lastPrice;
+       
+
+        public Position(InstrConfig instrConfig, TradeModel trModel) 
         {
             this.instrConfig = instrConfig;
+            this.trModel = trModel;
 
-            profit = 0;
+            size = 0; 
+            
+            lastEquity = 0;
         }
 
 
-        public void update(double price, DateTime time)
+        public void enter(double price)
         {
-            double delta = size * instrConfig.leverage * instrConfig.lot  * (price - lastPrice) / instrConfig.instr_tick;
-
-            profit += delta;
-
             lastPrice = price;
         }
 
 
-        public void change(int deltaSize, double price, DateTime time)
+        public void update(double price) //on close!
         {
-            update(price, time);
+            lastEquity += calcEquityChange(price);
+
+            lastPrice = price;
+
+            calcMetrics();
+        }
+
+
+        private double calcEquityChange(double price)
+        {
+            return size * instrConfig.leverage * instrConfig.lot  * (price - lastPrice) / instrConfig.instr_tick;
+        }
+
+
+        public void change(int deltaSize) //on order trigger
+        {
             size += deltaSize;
         }
 
 
+        private void calcMetrics()
+        {
+            if(maxProfit < lastEquity) 
+            { 
+                maxProfit = lastEquity;
+            }
+
+            if(maxLoss > lastEquity)
+            {
+                maxLoss = lastEquity;
+            }
+
+            if(maxProfit > lastEquity)
+            {
+                drawdown = maxProfit - lastEquity;
+            }
+            else
+            {
+                drawdown = 0;
+            }            
+        }
+
     }
+
 }

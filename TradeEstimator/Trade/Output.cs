@@ -22,9 +22,10 @@ namespace TradeEstimator.Trade
         public double profit; //percent or abs???
         public double drawdown; //percent  or abs???
         public double exposure; //units?
+        public List<Order> orders;
 
 
-        public Output(Config config, Logger logger, TradeModel trModel, string tradeId, string timestamp, string instrument, double profit, double drawdown, double exposure)
+        public Output(Config config, Logger logger, TradeModel trModel, string tradeId, string timestamp, string instrument, double profit, double drawdown, double exposure, List<Order> orders)
         {
             this.config = config;
             this.logger = logger;
@@ -35,6 +36,7 @@ namespace TradeEstimator.Trade
             this.profit = profit;
             this.drawdown = drawdown;
             this.exposure = exposure;
+            this.orders = orders;
 
             //20101017 195200; 1.3977; 1.3977; 1.3977; 1.3977; 500000
             //DateTime dt = DateTime.ParseExact(s[0], "yyyyMMdd HHmmss", CultureInfo.InvariantCulture);

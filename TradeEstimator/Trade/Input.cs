@@ -22,24 +22,27 @@ namespace TradeEstimator.Trade
         Logger logger;
         TradeModel trModel;
         string tradeId;
-        public string timestamp;
+        public DateTime time;
         public string instrument;
         
         //runtime
         public List<int> size;
         public List<double> price;
         public int n;
+        
 
 
-        public Input(Config config, Logger logger, TradeModel trModel, string tradeId, string timestamp, string instrument)
+        public Input(Config config, Logger logger, TradeModel trModel, string tradeId, DateTime time, string instrument)
         {
             this.config = config;
             this.logger = logger;
             this.trModel = trModel;
-            this.timestamp = timestamp;
+            this.time = time;
             this.instrument = instrument;
             this.tradeId = tradeId;
 
+
+            string timestamp = getTimestamp(time);
             timestamp = timestamp.Replace(" ", "_");
             string year = timestamp.Substring(0, 3);
             string month = timestamp.Substring(4, 5);
@@ -86,6 +89,12 @@ namespace TradeEstimator.Trade
                 size.Add(int.Parse(s[0].Trim(), CultureInfo.InvariantCulture));
                 price.Add(double.Parse(s[1].Trim(), CultureInfo.InvariantCulture));
             }
+        }
+
+
+        private string getTimestamp(DateTime time) //TO DO: in one place (now in trader and ion tradeProcess)
+        {
+            return time.ToString("yyyyMMdd HHmmss");
         }
 
 

@@ -33,7 +33,9 @@ namespace TradeEstimator.Trade
         InputTimes inputTimes; 
         TradeProcess[] trProcesses;
         Portfolio portfolio;
-        List <Output> outputs;
+
+        //output
+        public List <Output> outputs; //pass to chart
 
 
 
@@ -110,33 +112,49 @@ namespace TradeEstimator.Trade
             {
                 for (int instrI = 0; instrI < instrN; instrI++) // instr cycle - - - - - - - - -
                 {
-                    DBar bar = instrDaysQuotes[instrI].dBars[barI];
 
-                    if (barI == lastBar[instrI])
+                    VBar bar = null;
+                    DBar bar0 = null;
+                    DBar bar1 = instrDaysQuotes[instrI].dBars[barI];
+
+                    if (barI > 0)
                     {
-                        //last bar
+                        bar0 = instrDaysQuotes[instrI].dBars[barI - 1];                        
+                        bar = new(bar0, bar1);
+                    }
 
-                        //TO DO
+                    if (barI == 0)
+                    {
+                        //First bar
+                        trProcesses[instrI].clearOrders(bar1.time);
 
-                        //cancel orders, close positions, save final output
+                        trProcesses[instrI].processFirstBar(bar1);
+                    }
+                    else if (barI == lastBar[instrI])
+                    {
+                        //Last bar
+                        trProcesses[instrI].clearOrders(bar0.time);
 
                         trProcesses[instrI].processLastBar(bar);
 
                         createOutput(trProcesses[instrI]);
                     }
-                    else
+                    else 
                     {
-                        //not last bar
-
-                        if (DateTime.Compare(bar.time, timeI) == 0)
+                        if (DateTime.Compare(bar.time, timeI) == 0) // never set inputs on first bar! 
                         {
                             Input? input = getInput(instruments[instrI], bar);
 
-                            var orders = createOrders(input);
-                          
-                            trProcesses[instrI].processBar(orders, bar);
+                            var orders = createOrders(input, bar);
+
+                            trProcesses[instrI].clearOrders(bar0.time); //optional
+
+                            trProcesses[instrI].addOrders(orders);
+
+                            trProcesses[instrI].processBar(bar);
                         }
                     }
+
                 } // instr cycle - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
                 portfolio.update();
@@ -149,13 +167,13 @@ namespace TradeEstimator.Trade
         }
 
 
-        private Input getInput(string instr, DBar bar) 
+        private Input getInput(string instr, VBar bar) 
         {
             foreach(DateTime inputTime in inputTimes.itimes)
             {
                 if(DateTime.Compare(inputTime, bar.time) == 0)
                 {
-                    return new Input(config, logger, trModel, tradeId, getTimestamp(bar.time), instr);
+                    return new Input(config, logger, trModel, tradeId, bar.time, instr);
                 }
             }
 
@@ -163,7 +181,7 @@ namespace TradeEstimator.Trade
         }
 
 
-        private List<Order> createOrders(Input input)
+        private List<Order> createOrders(Input input, VBar bar)
         {
             List<Order> orders = new();
 
@@ -171,27 +189,50 @@ namespace TradeEstimator.Trade
             {
                 for (int i = 0; i < input.n; i++) 
                 {
-                    string dir = "";
-
-                    if (input.size[i] > 0)
+                    if(input.size[i] != 0)
                     {
-                        dir = "BUY";
-                    }
-
-                    if (input.size[i] < 0)
-                    {
-                        dir = "SELL";
-                    }
-
-                    if(dir != "")
-                    {
-                        Order order = new(input.instrument, dir, input.size[i], input.price[i], input.timestamp);
+                        var order = createOrder(input, i, bar);
                         orders.Add(order);
                     }
                 }
             }
-
             return orders;
+        }
+
+
+        private Order createOrder(Input input, int index, VBar bar)
+        {
+
+            string orderType = "market";
+
+            if(input.size[index] > 0)
+            {
+                if(bar.close < input.price[index])
+                {
+                    orderType = "limit";
+                }
+
+                if (bar.close < input.price[index])
+                {
+                    orderType = "stop";
+                }
+            }
+            else
+            {
+                if (bar.close < input.price[index])
+                {
+                    orderType = "stop";
+                }
+
+                if (bar.close < input.price[index])
+                {
+                    orderType = "limit";
+                }
+            }
+
+            Order order = new(input.instrument, input.size[index], orderType, input.price[index], input.time);
+
+            return order;
         }
 
 
@@ -199,12 +240,12 @@ namespace TradeEstimator.Trade
         {
             int barI = trProcess.timeLine.Count - 1;
 
-            double profit = trProcess.profitLine[barI];
+            double profit = trProcess.equityLine[barI];
             double drawdown = trProcess.drawdownLine[barI];
             double exposure = trProcess.exposureLine[barI];
             string timestamp = getTimestamp(trProcess.timeLine[barI]);
 
-            var output = new Output(config, logger, trModel, tradeId, timestamp, trProcess.instrConfig.instr_name, profit, drawdown, exposure);
+            var output = new Output(config, logger, trModel, tradeId, timestamp, trProcess.instrConfig.instr_name, profit, drawdown, exposure, trProcess.inactiveOrders);
             outputs.Add(output);
         }
 
@@ -218,12 +259,12 @@ namespace TradeEstimator.Trade
             double exposure = portfolio.exposureLine[barI];
             string timestamp = getTimestamp(portfolio.timeLine[barI]);
 
-            var output = new Output(config, logger, trModel, tradeId, timestamp, "Portfolio", profit, drawdown, exposure);
+            var output = new Output(config, logger, trModel, tradeId, timestamp, "Portfolio", profit, drawdown, exposure, null);
             outputs.Add(output);
         }
 
 
-        private string getTimestamp(DateTime time)
+        private string getTimestamp(DateTime time) //TO DO: in one place (now in trader and ion tradeProcess)
         {
             return time.ToString("yyyyMMdd HHmmss");
         }

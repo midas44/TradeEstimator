@@ -68,7 +68,7 @@ namespace TradeEstimator.Trade
                 if (n > 0)
                 {
                     timeLine.Add(trProcess.timeLine[n]);
-                    profit += trProcess.profitLine[n];
+                    profit += trProcess.equityLine[n];
                     drawdown += trProcess.drawdownLine[n];
                     exposure += Math.Abs(trProcess.exposureLine[n]);
                 }

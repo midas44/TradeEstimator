@@ -13,28 +13,53 @@ namespace TradeEstimator.Trade
         public string instr; // instr name
         public string dir; //BUY, SELL
         public int size;   //lots 
+        public string type; //limit, stop, market    //TO DO: some hybrids?
         public double triggerPrice;
-        public string timestamp;
+
+        public DateTime startTime;
 
         //runtime
         public bool isActive;
+        public DateTime endTime;
+        public bool isTriggered;
+        public double entryPrice;
 
 
-        public Order(string instr, string dir, int size, double triggerPrice, string timestamp)
+        public Order(string instr, int size, string type, double triggerPrice, DateTime startTime)
         {
             this.instr = instr;
-            this.dir = dir;
             this.size = size;
             this.triggerPrice = triggerPrice;
-            this.timestamp = timestamp;
-
+            this.startTime = startTime;
+            
             isActive = true;
+            isTriggered = false;
+
+            entryPrice = -1;
+
+            dir = "";
+
+            if (size > 0)
+            {
+                dir = "BUY";
+            }
+
+            if (size < 0)
+            {
+                dir = "SELL";
+            }
+
+            if(size == 0)
+            {
+                isActive = false;
+            }
         }
 
 
-        public void deactivate()
+        public void deactivate(DateTime time)
         {
             isActive = false;
+            endTime = time;
         }
 
     }
