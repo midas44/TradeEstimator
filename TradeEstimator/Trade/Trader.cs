@@ -62,10 +62,14 @@ namespace TradeEstimator.Trade
         {
             instruments = new();
 
+            instrDaysQuotes = new();
+
             foreach (InstrConfig instrConfig in instrConfigs)
             {
                 Quotes instrQuotes = all_data.getInstrQuotes(instrConfig.instr_name);
                 DaysQuotes daysQuotes = instrQuotes.get_days_quotes_no_adr(trModel, time1, time2);
+                //logger.log(" time1 = " + time1.ToString(config.full_datetime_format), 2);
+                //logger.log(" time2 = " + time2.ToString(config.full_datetime_format), 2);
                 instrDaysQuotes.Add(daysQuotes);
                 instruments.Add(instrConfig.instr_name);
             }
@@ -76,7 +80,10 @@ namespace TradeEstimator.Trade
 
             for(int i = 0; i < instrN; i++)
             {
-                lastBar[i] = instrDaysQuotes[i].Timeline.Length - 1; // max index, not length!
+                logger.log(instruments[i], 2);
+                logger.log("instrDaysQuotes[i].dBars.Count = " + instrDaysQuotes[i].dBars.Count.ToString(), 2);
+                logger.log("instrDaysQuotes[i].Timeline.Length = " + instrDaysQuotes[i].Timeline.Length.ToString(), 2);
+                lastBar[i] = instrDaysQuotes[i].dBars.Count - 1; // max index, not length!
             }
 
             trProcesses = new TradeProcess[instrN];
@@ -96,36 +103,48 @@ namespace TradeEstimator.Trade
 
         private void run()
         {
+            logger.log("Run", 2);
+
             int maxLastBar = 0; 
 
             for (int i = 0; i < instrN; i++)
             {
+                logger.log("lastBar = " + lastBar[i].ToString(), 2);
+
                 if (lastBar[i] > maxLastBar)
                 {
-                    maxLastBar = lastBar[i];
+                    maxLastBar = lastBar[i];                  
                 }
             }
 
             DateTime timeI = time1;
 
-            for (int barI = 0; barI <= maxLastBar; barI++) // bar cycle : : : : : : : : : : : : : : : : : : : : : : :
+            for (int barI = 0; barI < maxLastBar; barI++) // bar cycle : : : : : : : : : : : : : : : : : : : : : : :
             {
+                    
                 for (int instrI = 0; instrI < instrN; instrI++) // instr cycle - - - - - - - - -
                 {
-
+                 
                     VBar bar = null;
                     DBar bar0 = null;
-                    DBar bar1 = instrDaysQuotes[instrI].dBars[barI];
 
+
+                    DBar bar1 = instrDaysQuotes[instrI].dBars[barI];  
+
+                    
                     if (barI > 0)
                     {
-                        bar0 = instrDaysQuotes[instrI].dBars[barI - 1];                        
+                        bar0 = instrDaysQuotes[instrI].dBars[barI - 1];
                         bar = new(bar0, bar1);
                     }
+                    
 
+                    
                     if (barI == 0)
                     {
                         //First bar
+                        logger.log("First bar", 2);
+
                         trProcesses[instrI].clearOrders(bar1.time);
 
                         trProcesses[instrI].processFirstBar(bar1);
@@ -133,6 +152,8 @@ namespace TradeEstimator.Trade
                     else if (barI == lastBar[instrI])
                     {
                         //Last bar
+                        logger.log("Last bar", 2);
+
                         trProcesses[instrI].clearOrders(bar0.time);
 
                         trProcesses[instrI].processLastBar(bar);
@@ -154,16 +175,22 @@ namespace TradeEstimator.Trade
                             trProcesses[instrI].processBar(bar);
                         }
                     }
+                    
+                    
+
+
+
 
                 } // instr cycle - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
+                    
                 portfolio.update();
 
                 timeI.AddMinutes(config.tf);
 
             } // bar cycle : : : : : : : : : : : : : : : : : : : : : : : : : : : : : :
 
-            createPortfolioOutput(portfolio);
+            
+            // createPortfolioOutput(portfolio); //DEBUG disabled!!!
         }
 
 
@@ -252,7 +279,7 @@ namespace TradeEstimator.Trade
 
         public void createPortfolioOutput(Portfolio portfolio)
         {
-            int barI = portfolio.timeLine.Count - 1;
+            int barI = portfolio.timeLine.Count - 1; //problem here
 
             double profit = portfolio.profitLine[barI];
             double drawdown = portfolio.drawdownLine[barI];

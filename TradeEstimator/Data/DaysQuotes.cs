@@ -16,6 +16,9 @@ namespace TradeEstimator.Data
         public DateTime day1;
         public DateTime day2;
 
+        public DateTime time1;
+        public DateTime time2;
+
         public DateTime[] Timeline;
         public Double[] Open;
         public Double[] High;
@@ -32,7 +35,7 @@ namespace TradeEstimator.Data
         public double prevHigh;
         public double prevLow;
 
-        public DBar[] dBars;
+        public List<DBar> dBars;
 
 
         public DaysQuotes(string instrument, DateTime day1, DateTime day2, DateTime[] Timeline, Double[] Open, Double[] High, Double[] Low, Double[] Close, Double[] Volume, Double[] DR, Double[] ADR) 
@@ -56,10 +59,17 @@ namespace TradeEstimator.Data
             prevHigh = -1;
             prevLow = -1;
 
+            TimeSpan ts1 = new TimeSpan(0, 0, 0);
+            time1 = day1.Date + ts1;
+
+            TimeSpan ts2 = new TimeSpan(23, 59, 59);
+            time2 = day2.Date + ts2;
+
             createDBars();
         }
 
 
+        /*
         public Bar getBar(DateTime time)
         {
             Bar bar;
@@ -91,13 +101,13 @@ namespace TradeEstimator.Data
         
             return bar;
         }
-
+        */
 
 
 
         private void createDBars()
         {
-            List<DBar> dBars_list = new();
+            dBars = new();
 
             int n = Timeline.Length;
             int i = 1; //i always > 0 !!! to avoid some old problem
@@ -106,13 +116,17 @@ namespace TradeEstimator.Data
             while (key)
             {
 
-                if (DateTime.Compare(Timeline[i], day1) >= 0)
+                if (DateTime.Compare(Timeline[i], time1) >= 0 && DateTime.Compare(Timeline[i], time2) <= 0)
                 {
 
                     DBar dBar = new(Timeline[i], Open[i], High[i], Low[i], Close[i]);
-                    dBars_list.Add(dBar);
+                    dBars.Add(dBar);
 
-                    if (DateTime.Compare(Timeline[i], day2) >= 0)
+
+                }
+                else
+                {
+                    if (DateTime.Compare(Timeline[i], time2) > 0)
                     {
                         key = false;
                     }
@@ -123,7 +137,7 @@ namespace TradeEstimator.Data
                 if (i >= n) { key = false; }
             }
 
-            dBars = dBars_list.ToArray();
+            
 
         }
 

@@ -57,6 +57,7 @@
             label2 = new Label();
             label1 = new Label();
             panel_models = new Panel();
+            label8 = new Label();
             comboBox_tr_model = new ComboBox();
             panel_run = new Panel();
             buttonRun = new Button();
@@ -77,6 +78,7 @@
             dateTimePicker2 = new DateTimePicker();
             dateTimePicker1 = new DateTimePicker();
             checkedListBox_period = new CheckedListBox();
+            buttonTrade = new Button();
             panel0.SuspendLayout();
             panel_chart1.SuspendLayout();
             panel3.SuspendLayout();
@@ -149,6 +151,7 @@
             // panel_tr
             // 
             panel_tr.BackColor = Color.FromArgb(24, 33, 49);
+            panel_tr.Controls.Add(buttonTrade);
             panel_tr.Controls.Add(button_rescale_all);
             panel_tr.Controls.Add(button_rescale_price);
             panel_tr.Controls.Add(button_rescale_time);
@@ -442,11 +445,24 @@
             // 
             // panel_models
             // 
+            panel_models.Controls.Add(label8);
             panel_models.Controls.Add(comboBox_tr_model);
             panel_models.Location = new Point(214, 29);
             panel_models.Name = "panel_models";
             panel_models.Size = new Size(216, 160);
             panel_models.TabIndex = 24;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.FlatStyle = FlatStyle.Flat;
+            label8.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label8.ForeColor = Color.FromArgb(204, 226, 255);
+            label8.Location = new Point(21, 72);
+            label8.Name = "label8";
+            label8.Size = new Size(76, 31);
+            label8.TabIndex = 63;
+            label8.Text = "label8";
             // 
             // comboBox_tr_model
             // 
@@ -718,6 +734,20 @@
             checkedListBox_period.ItemCheck += checkedListBox_period_ItemCheck;
             checkedListBox_period.MouseUp += checkedListBox_period_MouseUp;
             // 
+            // buttonTrade
+            // 
+            buttonTrade.BackColor = Color.Indigo;
+            buttonTrade.FlatStyle = FlatStyle.Flat;
+            buttonTrade.ForeColor = Color.Magenta;
+            buttonTrade.Location = new Point(283, 19);
+            buttonTrade.Margin = new Padding(4);
+            buttonTrade.Name = "buttonTrade";
+            buttonTrade.Size = new Size(151, 40);
+            buttonTrade.TabIndex = 28;
+            buttonTrade.Text = "Trade";
+            buttonTrade.UseVisualStyleBackColor = false;
+            buttonTrade.Click += buttonTrade_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(9F, 23F);
@@ -742,6 +772,7 @@
             panel_labels.ResumeLayout(false);
             panel_labels.PerformLayout();
             panel_models.ResumeLayout(false);
+            panel_models.PerformLayout();
             panel_run.ResumeLayout(false);
             panel_run.PerformLayout();
             panel_modes.ResumeLayout(false);
@@ -800,5 +831,7 @@
         private Button button_rescale_time;
         private Button button_rescale_price;
         private Button button_rescale_all;
+        private Label label8;
+        private Button buttonTrade;
     }
 }

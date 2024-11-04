@@ -123,7 +123,7 @@ namespace TradeEstimator.Conf
             log_path = INI.Read("log_path", "Path").Trim().Replace("[data_path]", data_path);
             tsets_path = INI.Read("tsets_path", "Path").Trim().Replace("[data_path]", data_path);
 
-            inputs_path = INI.Read("inputs_path", "Path").Trim().Replace("[data_path]", data_path);\
+            inputs_path = INI.Read("inputs_path", "Path").Trim().Replace("[data_path]", data_path);
             outputs_path = INI.Read("outputs_path", "Path").Trim().Replace("[data_path]", data_path);
 
 

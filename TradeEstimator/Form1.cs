@@ -177,6 +177,7 @@ namespace TradeEstimator
             label5.Text = "";
             label6.Text = "";
             label7.Text = "";
+            label8.Text = "";
 
             checkedListBox_period.BackColor = backgroundColor1;
             checkedListBox_period.ForeColor = foregroundColor1;
@@ -233,7 +234,7 @@ namespace TradeEstimator
             runner = new(runnerBase);
             Application.DoEvents();
 
-            runTrade();
+            //runTrade();
         }
 
 
@@ -589,6 +590,8 @@ namespace TradeEstimator
 
             //TO DO
 
+            label8.Text = "trade_id = " + trModel.tradeId;
+
             noRun = false;
 
             Application.DoEvents();
@@ -684,7 +687,19 @@ namespace TradeEstimator
                 runner.setTimingUI();
                 runner.goRandomInstr();
                 noRun = false;
+
                 runner.run();
+
+                //quick fix
+                /*
+            if (chart1 != null)
+            {
+                chart1.set_chart_limits();
+
+                chart1.finalize();
+            }
+            */
+
             }
         }
 
@@ -1276,7 +1291,10 @@ namespace TradeEstimator
             }
         }
 
-
+        private void buttonTrade_Click(object sender, EventArgs e)
+        {
+            runTrade();
+        }
     }
 
 }

@@ -113,9 +113,11 @@ namespace TradeEstimator.Trade
             order.entryPrice = entryPrice;
             deactivateOrder(order, bar.time);
 
+            position.update(entryPrice);
+
             position.change(order.size);
 
-            position.update(entryPrice);
+            
         }
 
 
@@ -128,7 +130,7 @@ namespace TradeEstimator.Trade
                 trade(order, bar);               
             }
 
-            recordMetrics();
+            recordMetrics(bar.time);
         }
 
 
@@ -142,8 +144,11 @@ namespace TradeEstimator.Trade
         }
 
 
-        private void recordMetrics() // on bar close
+        private void recordMetrics(DateTime time) // on bar close
         {
+
+            timeLine.Add(time);
+
             equityLine.Add(position.lastEquity);
 
             lossLine.Add(position.maxLoss);

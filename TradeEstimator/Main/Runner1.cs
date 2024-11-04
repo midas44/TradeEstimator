@@ -54,6 +54,8 @@ namespace TradeEstimator.Main
         }
 
 
+
+
         public void setTimingUI()
         {
             Application.DoEvents();

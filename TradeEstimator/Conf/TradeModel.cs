@@ -8,9 +8,14 @@ using System.Threading.Tasks;
 namespace TradeEstimator.Conf
 {
     public class TradeModel
-
     {
         public string trModelName;
+
+
+
+        //Main
+
+        public string tradeId;
 
 
         //Time
@@ -59,6 +64,10 @@ namespace TradeEstimator.Conf
             this.trModelName = tr_model_name;
 
             IniFile INI = new IniFile("configuration/models/trade/" + tr_model_name + ".ini");
+
+            //Main
+
+            tradeId = INI.Read("trade_id", "Main").Trim();
 
 
             //Time

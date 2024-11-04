@@ -25,6 +25,8 @@ namespace TradeEstimator.Main
         public Logger logger;
         public QuotesLoader allData;
 
+        public List<InstrConfig> instrConfigs;
+
 
         public RunnerBase(Config config, Logger logger)
         {
@@ -34,13 +36,26 @@ namespace TradeEstimator.Main
             logger.logTitle("Trade Estimator", 1);
             logger.log_("Runner", 1);
 
-            loadData();
+            loadInstrData();
+
+            loadInstrConfigs();
         }
 
 
-        public void loadData()
+        public void loadInstrData()
         {
             allData = new(config, logger);
+        }
+
+        public void loadInstrConfigs()
+        {
+            instrConfigs = new();
+
+            foreach (string instrument in config.instruments)
+            {
+                var instrConfig = new InstrConfig(instrument);
+                instrConfigs.Add(instrConfig);
+            }
         }
 
     }

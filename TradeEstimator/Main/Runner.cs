@@ -34,7 +34,9 @@ namespace TradeEstimator.Main
 
         public bool isBusy;
 
-        bool chart1_rescale_key;
+        public bool chart1_rescale_key;
+
+        //public bool tradeKey;
 
 
 
@@ -53,6 +55,8 @@ namespace TradeEstimator.Main
             f1.setConfig(config);
 
             setupUI();
+
+
 
             run();
         }
@@ -93,15 +97,20 @@ namespace TradeEstimator.Main
                     break;
             }
 
-            tradesRun();
+            //tradesRun();
         }
 
 
         public void tradesRun()
         {
+            logger.log_("tradesRun", 2);
+
+
             if (f1.noRun) { return; }
 
             getUIstate();
+
+
 
 
             switch (config.ui_mode)
@@ -111,9 +120,14 @@ namespace TradeEstimator.Main
                     break;
 
                 case 1:
-                    createTrades_withUI();
+                    
+                    createTrades_withUI(); //need not?
+
                     createChart1();
                     outputData1();
+
+                    Trader trader = new(config, logger, runnerBase.allData, runnerBase.instrConfigs, trModel, trModel.tradeId, displayDate1, displayDate2);
+
                     outputTrades1();
                     finalize1();
                     break;
@@ -131,6 +145,7 @@ namespace TradeEstimator.Main
             f1.showMark2();
             chart1.mark(); 
 
+            /*
             if (chart1_rescale_key) //only on run event
             {
                 f1.chart1YRange = 3.0;
@@ -139,6 +154,8 @@ namespace TradeEstimator.Main
 
                 chart1_rescale_key = false;
             }
+            */
+            chart1.set_chart_limits();
 
             chart1.finalize();
         }
