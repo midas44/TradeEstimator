@@ -128,7 +128,8 @@ namespace TradeEstimator.Main
 
                     Trader trader = new(config, logger, runnerBase.allData, runnerBase.instrConfigs, trModel, trModel.tradeId, displayDate1, displayDate2);
 
-                    outputTrades1();
+                    outputTrades(trader);
+
                     finalize1();
                     break;
             }
@@ -218,11 +219,6 @@ namespace TradeEstimator.Main
             return single_timepoint;
         }
 
-
-        private void getAnIterUiState()
-        {
-
-        }
 
         public void createTrades_withUI() //only for UI modes (1,2)!
         {

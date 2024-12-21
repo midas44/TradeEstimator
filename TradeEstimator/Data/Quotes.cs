@@ -219,7 +219,7 @@ namespace TradeEstimator.Data
                 j++;
             }
 
-            return new(instrument, day1, day2, dayTimeline, dayOpen, dayHigh, dayLow, dayClose, dayVolume, dayDR, dayADR);
+            return new(instrument, day1, day2, config.tf, dayTimeline, dayOpen, dayHigh, dayLow, dayClose, dayVolume, dayDR, dayADR);
         }
 
         public DaysQuotes get_days_quotes_no_adr(TradeModel tr_model, DateTime day1, DateTime day2)
@@ -265,7 +265,7 @@ namespace TradeEstimator.Data
                 j++;
             }
 
-            return new(instrument, day1, day2, dayTimeline, dayOpen, dayHigh, dayLow, dayClose, dayVolume, dayDR, dayADR);
+            return new(instrument, day1, day2, config.tf, dayTimeline, dayOpen, dayHigh, dayLow, dayClose, dayVolume, dayDR, dayADR);
         }
 
 

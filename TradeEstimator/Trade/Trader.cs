@@ -27,12 +27,12 @@ namespace TradeEstimator.Trade
         //runtime
         List<InstrConfig> instrConfigs;
         List<DaysQuotes> instrDaysQuotes;
-        List<string> instruments;
-        int[] lastBar;
+        public List<string> instruments;
+        //int[] lastBar;
         int instrN;
         InputTimes inputTimes; 
-        TradeProcess[] trProcesses;
-        Portfolio portfolio;
+        public TradeProcess[] trProcesses;
+        public Portfolio portfolio;
 
         //output
         public List <Output> outputs; //pass to chart
@@ -76,14 +76,14 @@ namespace TradeEstimator.Trade
 
             instrN = instruments.Count;
 
-            lastBar = new int[instrN];
+            //lastBar = new int[instrN];
 
             for(int i = 0; i < instrN; i++)
             {
                 logger.log(instruments[i], 2);
                 logger.log("instrDaysQuotes[i].dBars.Count = " + instrDaysQuotes[i].dBars.Count.ToString(), 2);
                 logger.log("instrDaysQuotes[i].Timeline.Length = " + instrDaysQuotes[i].Timeline.Length.ToString(), 2);
-                lastBar[i] = instrDaysQuotes[i].dBars.Count - 1; // max index, not length!
+                //lastBar[i] = instrDaysQuotes[i].dBars.Count - 1; // max index, not length!
             }
 
             trProcesses = new TradeProcess[instrN];
@@ -105,93 +105,155 @@ namespace TradeEstimator.Trade
         {
             logger.log("Run", 2);
 
-            int maxLastBar = 0; 
-
-            for (int i = 0; i < instrN; i++)
-            {
-                logger.log("lastBar = " + lastBar[i].ToString(), 2);
-
-                if (lastBar[i] > maxLastBar)
-                {
-                    maxLastBar = lastBar[i];                  
-                }
-            }
-
             DateTime timeI = time1;
+            
+            MessageBox.Show("START  tf=" + config.tf.ToString() + "m" +  "  time1 = " + time1.ToString() + "  time2 = " + time2.ToString() + "  timeI = " + timeI.ToString());
 
-            for (int barI = 0; barI < maxLastBar; barI++) // bar cycle : : : : : : : : : : : : : : : : : : : : : : :
+            int barN = instrDaysQuotes[0].dBars.Count; //must be equal count for all instruments!
+
+            for (int barI = 0; barI < barN; barI++) // bar cycle : : : : : : : : : : : : : : : : : : : : : : :
             {
-                    
+
                 for (int instrI = 0; instrI < instrN; instrI++) // instr cycle - - - - - - - - -
                 {
-                 
+
+
+
+                    //TODO: rewrite on getDbar by time!!
+
+                    //NEW
+
+                    /*
+
                     VBar bar = null;
+
                     DBar bar0 = null;
+                    DBar bar1 = instrDaysQuotes[instrI].getDBar(timeI);
 
-
-                    DBar bar1 = instrDaysQuotes[instrI].dBars[barI];  
+                    int barI = instrDaysQuotes[instrI].getBarI();
 
                     
-                    if (barI > 0)
+                    if (barI > 0 && barI< instrDaysQuotes[instrI].dBars.Count)
                     {
-                        bar0 = instrDaysQuotes[instrI].dBars[barI - 1];
-                        bar = new(bar0, bar1);
-                    }
-                    
 
-                    
+                        
+                        int i = instrDaysQuotes[instrI].dBars.Count;
+
+                        if (barI >= i)
+                        {
+                            MessageBox.Show("dBars.Count = " + i.ToString() + "  barI = " + barI.ToString());
+                        }
+
+                            
+
+
+                        bar0 = instrDaysQuotes[instrI].dBars[barI];
+                        bar = new(bar0, bar1); //virtual bar!
+                    }
+
+                    if (barI == 0)
+                    {
+                       // int i = instrDaysQuotes[instrI].dBars.Count;
+
+                        //MessageBox.Show(i.ToString());
+
+
+                        bar0 = instrDaysQuotes[instrI].dBars[barI];   //BUG
+                        bar = new(bar1, bar1); //virtual bar!   //here!
+                    }
+
+                    */
+
+                    /*
                     if (barI == 0)
                     {
                         //First bar
+
+                        //bar1 = bar0;
+
+                        
+
                         logger.log("First bar", 2);
+
+                        logger.log("process first bar: " + bar1.time.ToString(config.full_datetime_format), 2);
 
                         trProcesses[instrI].clearOrders(bar1.time);
 
                         trProcesses[instrI].processFirstBar(bar1);
+                       
                     }
-                    else if (barI == lastBar[instrI])
+
+                    else
                     {
-                        //Last bar
-                        logger.log("Last bar", 2);
 
-                        trProcesses[instrI].clearOrders(bar0.time);
-
-                        trProcesses[instrI].processLastBar(bar);
-
-                        createOutput(trProcesses[instrI]);
-                    }
-                    else 
-                    {
-                        if (DateTime.Compare(bar.time, timeI) == 0) // never set inputs on first bar! 
+                        if (barI == instrDaysQuotes[instrI].dBars.Count -1)
                         {
+                            //Last bar
+                            logger.log("Last bar", 2);
+
+                            logger.log("process last bar: " + bar.time.ToString(config.full_datetime_format), 2);
+
+                            trProcesses[instrI].clearOrders(bar0.time);
+
+                            trProcesses[instrI].processLastBar(bar);
+
+                            createOutput(trProcesses[instrI]);
+                        }
+                        else
+                        {
+                            //DEBUG disabled
+                            // if (DateTime.Compare(bar.time, timeI) == 0) // never set inputs on first bar! 
+                            // {
                             Input? input = getInput(instruments[instrI], bar);
 
-                            var orders = createOrders(input, bar);
 
-                            trProcesses[instrI].clearOrders(bar0.time); //optional
+                            if (input != null)
+                            {
 
-                            trProcesses[instrI].addOrders(orders);
+                                logger.log("process bar: " + bar.time.ToString(config.full_datetime_format), 2);
 
-                            trProcesses[instrI].processBar(bar);
+                                logger.log("Input is here!", 2);
+
+                                logger.log("n = " + input.n.ToString(), 2);
+
+                                for (int i = 0; i < input.n; i++)
+                                {
+                                    logger.log("Input: " + i.ToString() + " " +
+                                    input.instrument + " " + input.size[i].ToString() + " " + input.time.ToString(config.full_datetime_format) + " " +
+                                    input.price[i].ToString(), 2);
+                                }
+
+                                var newOrders = createOrders(input, bar);
+
+                                trProcesses[instrI].clearOrders(bar0.time);
+
+                                trProcesses[instrI].addOrders(newOrders);
+
+                                trProcesses[instrI].processBar(bar);
+                            }
+
+
+                            // }
                         }
+
                     }
-                    
-                    
 
-
+                    */
 
 
                 } // instr cycle - - - - - - - - - - - - - - - - - - - - - - - - - - 
-                    
-                portfolio.update();
 
-                timeI.AddMinutes(config.tf);
+               portfolio.update();
+
+               timeI.AddMinutes(config.tf);
 
             } // bar cycle : : : : : : : : : : : : : : : : : : : : : : : : : : : : : :
 
-            
-            // createPortfolioOutput(portfolio); //DEBUG disabled!!!
+            MessageBox.Show("END  tf=" + config.tf.ToString() + "m" + "  time1 = " + time1.ToString() + "  time2 = " + time2.ToString() + "  timeI = " + timeI.ToString());
+
+            //createPortfolioOutput(portfolio); //DEBUG disabled!!!
         }
+
 
 
         private Input getInput(string instr, VBar bar) 
@@ -256,6 +318,9 @@ namespace TradeEstimator.Trade
                     orderType = "limit";
                 }
             }
+
+            logger.log("createOrder: " + 
+                input.instrument + " " + input.size[index] + " " + orderType + " " + input.price[index] + " " + input.time.ToString(config.full_datetime_format), 2);
 
             Order order = new(input.instrument, input.size[index], orderType, input.price[index], input.time);
 

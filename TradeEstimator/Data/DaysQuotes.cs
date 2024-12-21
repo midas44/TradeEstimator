@@ -16,6 +16,8 @@ namespace TradeEstimator.Data
         public DateTime day1;
         public DateTime day2;
 
+        public int tf;
+
         public DateTime time1;
         public DateTime time2;
 
@@ -28,8 +30,6 @@ namespace TradeEstimator.Data
         public Double[] DR;
         public Double[] ADR;
 
-        int n;
-
         int lastIndex;
 
         public double prevHigh;
@@ -38,11 +38,13 @@ namespace TradeEstimator.Data
         public List<DBar> dBars;
 
 
-        public DaysQuotes(string instrument, DateTime day1, DateTime day2, DateTime[] Timeline, Double[] Open, Double[] High, Double[] Low, Double[] Close, Double[] Volume, Double[] DR, Double[] ADR) 
+
+        public DaysQuotes(string instrument, DateTime day1, DateTime day2, int tf, DateTime[] Timeline, Double[] Open, Double[] High, Double[] Low, Double[] Close, Double[] Volume, Double[] DR, Double[] ADR) 
         {
             this.instrument = instrument;
             this.day1 = day1;
             this.day2 = day2;
+            this.tf = tf;
             this.Timeline = Timeline;
             this.Open = Open;
             this.High = High;
@@ -52,10 +54,7 @@ namespace TradeEstimator.Data
             this.DR = DR;
             this.ADR = ADR;
 
-            n = Timeline.Length - 1;
-
-            lastIndex = 0;
-
+            
             prevHigh = -1;
             prevLow = -1;
 
@@ -69,60 +68,20 @@ namespace TradeEstimator.Data
         }
 
 
-        /*
-        public Bar getBar(DateTime time)
-        {
-            Bar bar;
-
-            int i = lastIndex;
-
-            while (true)
-            {
-                i++; //i always > 0 !!!
-
-                if (i >= n)
-                {
-                    bar = new(instrument, Timeline[n], Open[n], High[n], Low[n], Close[n], Volume[n], DR[n], ADR[n]);
-                    prevHigh = High[n - 1];
-                    prevLow = Low[n - 1];
-                    break;
-                }
-
-                if (DateTime.Compare(Timeline[i], time) >= 0)
-                {                    
-                    bar = new(instrument, Timeline[i], Open[i], High[i], Low[i], Close[i], Volume[i], DR[i], ADR[i]);
-                    prevHigh = High[i - 1];
-                    prevLow = Low[i - 1];
-                    break;
-                }                
-            }
-
-            lastIndex = i;
-        
-            return bar;
-        }
-        */
-
-
-
-        private void createDBars()
+        private void createDBarsOld()
         {
             dBars = new();
 
             int n = Timeline.Length;
-            int i = 1; //i always > 0 !!! to avoid some old problem
+            int i = 0;
             bool key = true;
 
             while (key)
             {
-
                 if (DateTime.Compare(Timeline[i], time1) >= 0 && DateTime.Compare(Timeline[i], time2) <= 0)
                 {
-
                     DBar dBar = new(Timeline[i], Open[i], High[i], Low[i], Close[i]);
                     dBars.Add(dBar);
-
-
                 }
                 else
                 {
@@ -136,9 +95,52 @@ namespace TradeEstimator.Data
 
                 if (i >= n) { key = false; }
             }
+        }
 
-            
 
+        private void createDBars()
+        {
+            dBars = new();
+
+            int n = Timeline.Length;
+            int i = 0;
+
+            DBar dBar0;
+
+            foreach (DateTime t in Timeline)
+            {                
+                if (DateTime.Compare(t, time1) >= 0) {
+                    dBar0 = new(Timeline[i], Open[i], High[i], Low[i], Close[i]);
+                    i--;
+                    break; 
+                }
+                i++;
+            }
+
+
+            DateTime timeI = time1;
+
+            bool key = true;
+
+            while (key)
+            {
+                DBar dBar;
+
+                if (DateTime.Compare(Timeline[i], timeI) == 0)
+                {
+                    dBar = new(Timeline[i], Open[i], High[i], Low[i], Close[i]);
+                    dBars.Add(dBar);
+                }
+
+
+                if (DateTime.Compare(timeI, time2) == 0)
+                {
+                    key = false;
+                }
+
+                //dBar0 = dBar;
+
+            }
         }
 
 

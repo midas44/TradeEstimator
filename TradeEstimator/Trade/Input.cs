@@ -44,9 +44,9 @@ namespace TradeEstimator.Trade
 
             string timestamp = getTimestamp(time);
             timestamp = timestamp.Replace(" ", "_");
-            string year = timestamp.Substring(0, 3);
-            string month = timestamp.Substring(4, 5);
-            string day = timestamp.Substring(6, 7);
+            string year = timestamp.Substring(0, 4);
+            string month = timestamp.Substring(4, 2);
+            string day = timestamp.Substring(6, 2);
 
             string filePath = config.inputs_path + "/" 
                 + trModel.trModelName + "/"
@@ -68,8 +68,10 @@ namespace TradeEstimator.Trade
 
             if (File.Exists(filePath))
             {
+                logger.log("file exists", 2);
                 load(filePath);
                 n = price.Count;
+
             }
 
         }
@@ -77,17 +79,21 @@ namespace TradeEstimator.Trade
 
         private void load(string path)
         {
-            string[] dataset0 = System.IO.File.ReadAllLines(path);
-            string[] dataset = dataset0.Where(item => item != string.Empty).ToArray();
+            string[] dataset = System.IO.File.ReadAllLines(path);
+            //string[] dataset = dataset0.Where(item => item != string.Empty).ToArray();
 
             foreach (string line in dataset)
             {
-                //size; price;
+                if(line.Trim().Length > 0)
+                {
+                    //size; price;
 
-                string[] s = line.Split(';');
+                    string[] s = line.Split(';');
 
-                size.Add(int.Parse(s[0].Trim(), CultureInfo.InvariantCulture));
-                price.Add(double.Parse(s[1].Trim(), CultureInfo.InvariantCulture));
+                    size.Add(int.Parse(s[0].Trim(), CultureInfo.InvariantCulture));
+                    price.Add(double.Parse(s[1].Trim(), CultureInfo.InvariantCulture));
+                }
+
             }
         }
 

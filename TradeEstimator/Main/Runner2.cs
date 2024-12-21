@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TradeEstimator.Trade;
 
 namespace TradeEstimator.Main
 {
@@ -42,14 +43,15 @@ namespace TradeEstimator.Main
                 chart1.display_grids(daysQuotes, instrGrids.gridSets, displayDate1, displayDate2);
             }
 
-            chart1.finalize();
+            chart1.finalize(); //TO DO: disable here, put after trade markers and equity outpuе?
         }
 
 
-        public void outputTrades1()
+        public void outputTrades(Trader trader) //not in use
         {
-            getAnIterUiState();
-
+            int instrI = trader.instruments.IndexOf(instrName);
+            List<Order> instrOrders = trader.trProcesses[instrI].inactiveOrders;
+            chart1.outputOrders(instrOrders);
         }
 
 

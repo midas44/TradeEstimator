@@ -84,9 +84,17 @@ namespace TradeEstimator.Trade
 
         public void clearOrders(DateTime time)
         {
-            foreach(var order in activeOrders)
+            int n = activeOrders.Count;
+
+            if (n > 0)
             {
-                deactivateOrder(order, time);
+                for (int i = 0; i < n; i++)
+                {
+                    if(i < activeOrders.Count -1)
+                    {
+                        deactivateOrder(activeOrders[i], time);
+                    }                   
+                }
             }
         }
 
