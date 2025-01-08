@@ -46,7 +46,7 @@ namespace TradeEstimator.Main
         {
             instrQuotes = runnerBase.allData.getInstrQuotes(instrName);
 
-            daysQuotes = instrQuotes.get_days_quotes(trModel, displayDate1, displayDate2);
+            daysQuotes = instrQuotes.get_days_quotes(trModel, displayDate1, displayDate2, false);
 
             instrConfig = new(instrName);
 

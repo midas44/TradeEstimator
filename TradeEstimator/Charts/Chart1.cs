@@ -14,7 +14,7 @@ using TradeEstimator.Data;
 using TradeEstimator.Log;
 using TradeEstimator.Trade;
 using TradeEstimator;
-using ScottPlot.Control;
+using ScottPlot;
 
 namespace TradeEstimator.Charts
 {
@@ -124,7 +124,8 @@ namespace TradeEstimator.Charts
             h_track_color = ScottPlot.Colors.Silver.WithOpacity(0.3);
             v_track_color = ScottPlot.Colors.Silver.WithOpacity(0.3);
 
-            mark_color = f1.highlightColor2Hex;
+            // mark_color = f1.highlightColor2Hex;
+            mark_color = f1.foregroundColor3Hex;
 
             invisible_color = ScottPlot.Colors.Magenta.WithOpacity(0);
 
@@ -148,13 +149,12 @@ namespace TradeEstimator.Charts
 
             plot1.Plot.ScaleFactor = 1;
 
-            //plot2.Plot.Benchmark.IsVisible = false;
 
-            var interaction = plot1.Interaction as Interaction;
-            if (interaction is not null)
-            {
-                interaction.Actions.ToggleBenchmark = delegate { };
-            }
+            //plot1.Plot.Benchmark.IsVisible = false;
+
+            plot1.UserInputProcessor.RemoveAll<ScottPlot.Interactivity.UserActionResponses.DoubleClickBenchmark>();
+
+            //plot1.UserInputProcessor.IsEnabled = true;
 
 
             plot1.Visible = true;

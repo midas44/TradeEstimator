@@ -88,6 +88,8 @@ namespace TradeEstimator
 
         string activeIndicatorName;
 
+        public bool isFinished;
+
 
         public Form1()
         {
@@ -231,10 +233,11 @@ namespace TradeEstimator
 
         private void start()
         {
+            isFinished = false;
             runner = new(runnerBase);
             Application.DoEvents();
 
-            //runTrade();
+            //runTrade();    //on button Up        
         }
 
 
@@ -806,8 +809,17 @@ namespace TradeEstimator
         {
             if (noRun) { return; }
 
-            double x = track_x;
-            double y = track_y;
+            if (!isFinished) 
+            {
+                isFinished = true;
+                return;
+            }
+
+            double x = 0;
+            double y = 0;
+
+            x = track_x;
+            y = track_y;
 
             int xx = (int)Math.Ceiling(x);
 
@@ -877,9 +889,15 @@ namespace TradeEstimator
         }
 
 
-        public int reset_chosen_timepoint()
+        public void reset_chosen_timepoint()
         {
-            return -1;
+
+            chosen_timepoint = -1;
+
+            track_x = 0;
+            track_y = 0;
+
+            reset_labels();
         }
 
 

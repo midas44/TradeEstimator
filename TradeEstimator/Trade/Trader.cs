@@ -67,7 +67,7 @@ namespace TradeEstimator.Trade
             foreach (InstrConfig instrConfig in instrConfigs)
             {
                 Quotes instrQuotes = all_data.getInstrQuotes(instrConfig.instr_name);
-                DaysQuotes daysQuotes = instrQuotes.get_days_quotes_no_adr(trModel, time1, time2);
+                DaysQuotes daysQuotes = instrQuotes.get_days_quotes_no_adr(trModel, time1, time2, true);
                 //logger.log(" time1 = " + time1.ToString(config.full_datetime_format), 2);
                 //logger.log(" time2 = " + time2.ToString(config.full_datetime_format), 2);
                 instrDaysQuotes.Add(daysQuotes);
@@ -106,8 +106,12 @@ namespace TradeEstimator.Trade
             logger.log("Run", 2);
 
             DateTime timeI = time1;
-            
-            MessageBox.Show("START  tf=" + config.tf.ToString() + "m" +  "  time1 = " + time1.ToString() + "  time2 = " + time2.ToString() + "  timeI = " + timeI.ToString());
+
+            string msg1 = "START  tf=" + config.tf.ToString() + "m" + "  time1 = " + time1.ToString() + "  time2 = " + time2.ToString() + "  timeI = " + timeI.ToString();
+
+            logger.log(msg1, 2);
+
+           // MessageBox.Show(msg1);
 
             int barN = instrDaysQuotes[0].dBars.Count; //must be equal count for all instruments!
 
@@ -123,14 +127,14 @@ namespace TradeEstimator.Trade
 
                     //NEW
 
-                    /*
+                    
 
                     VBar bar = null;
 
                     DBar bar0 = null;
                     DBar bar1 = instrDaysQuotes[instrI].getDBar(timeI);
 
-                    int barI = instrDaysQuotes[instrI].getBarI();
+                    //int barI = instrDaysQuotes[instrI].getBarI();
 
                     
                     if (barI > 0 && barI< instrDaysQuotes[instrI].dBars.Count)
@@ -162,7 +166,7 @@ namespace TradeEstimator.Trade
                         bar = new(bar1, bar1); //virtual bar!   //here!
                     }
 
-                    */
+                    
 
                     /*
                     if (barI == 0)
@@ -249,7 +253,11 @@ namespace TradeEstimator.Trade
 
             } // bar cycle : : : : : : : : : : : : : : : : : : : : : : : : : : : : : :
 
-            MessageBox.Show("END  tf=" + config.tf.ToString() + "m" + "  time1 = " + time1.ToString() + "  time2 = " + time2.ToString() + "  timeI = " + timeI.ToString());
+
+            string msg2 = "END  tf=" + config.tf.ToString() + "m" + "  time1 = " + time1.ToString() + "  time2 = " + time2.ToString() + "  timeI = " + timeI.ToString();
+            logger.log(msg2, 2);
+
+            //MessageBox.Show(msg);
 
             //createPortfolioOutput(portfolio); //DEBUG disabled!!!
         }
