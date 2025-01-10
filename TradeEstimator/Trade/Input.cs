@@ -54,7 +54,7 @@ namespace TradeEstimator.Trade
                 + year + "/"
                 + month + "/"
                 + day + "/"
-                + timestamp + "/"
+                + timestamp + "/" //bug here!
                 + instrument + "_"
                 + config.data_timeframe + "." 
                 + config.data_ext;

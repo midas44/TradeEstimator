@@ -113,89 +113,32 @@ namespace TradeEstimator.Trade
 
            // MessageBox.Show(msg1);
 
-            int barN = instrDaysQuotes[0].dBars.Count; //must be equal count for all instruments!
+            int barN = instrDaysQuotes[0].dBars.Count; //must be equal count for all instruments! It should be after rewriting of DaysQuotes
 
             for (int barI = 0; barI < barN; barI++) // bar cycle : : : : : : : : : : : : : : : : : : : : : : :
             {
 
                 for (int instrI = 0; instrI < instrN; instrI++) // instr cycle - - - - - - - - -
                 {
+                    DBar bar0;
+                    DBar bar1;
 
+                    VBar bar;
 
+                    bar1 = instrDaysQuotes[instrI].dBars[barI];
 
-                    //TODO: rewrite on getDbar by time!!
-
-                    //NEW
-
-                    
-
-                    VBar bar = null;
-
-                    DBar bar0 = null;
-                    DBar bar1 = instrDaysQuotes[instrI].getDBar(timeI);
-
-                    //int barI = instrDaysQuotes[instrI].getBarI();
-
-                    
-                    if (barI > 0 && barI< instrDaysQuotes[instrI].dBars.Count)
-                    {
-
+                    if (barI > 0)
+                    {                       
+                        bar0 = instrDaysQuotes[instrI].dBars[barI-1];
                         
-                        int i = instrDaysQuotes[instrI].dBars.Count;
-
-                        if (barI >= i)
-                        {
-                            MessageBox.Show("dBars.Count = " + i.ToString() + "  barI = " + barI.ToString());
-                        }
-
-                            
-
-
-                        bar0 = instrDaysQuotes[instrI].dBars[barI];
                         bar = new(bar0, bar1); //virtual bar!
-                    }
 
-                    if (barI == 0)
-                    {
-                       // int i = instrDaysQuotes[instrI].dBars.Count;
-
-                        //MessageBox.Show(i.ToString());
-
-
-                        bar0 = instrDaysQuotes[instrI].dBars[barI];   //BUG
-                        bar = new(bar1, bar1); //virtual bar!   //here!
-                    }
-
-                    
-
-                    /*
-                    if (barI == 0)
-                    {
-                        //First bar
-
-                        //bar1 = bar0;
-
-                        
-
-                        logger.log("First bar", 2);
-
-                        logger.log("process first bar: " + bar1.time.ToString(config.full_datetime_format), 2);
-
-                        trProcesses[instrI].clearOrders(bar1.time);
-
-                        trProcesses[instrI].processFirstBar(bar1);
-                       
-                    }
-
-                    else
-                    {
-
-                        if (barI == instrDaysQuotes[instrI].dBars.Count -1)
+                        if(barI == barN - 1)
                         {
                             //Last bar
-                            logger.log("Last bar", 2);
 
-                            logger.log("process last bar: " + bar.time.ToString(config.full_datetime_format), 2);
+                            logger.log("Last bar", 2);
+                            logger.log("process last bar: " + bar1.time.ToString(config.full_datetime_format), 2);
 
                             trProcesses[instrI].clearOrders(bar0.time);
 
@@ -205,15 +148,12 @@ namespace TradeEstimator.Trade
                         }
                         else
                         {
-                            //DEBUG disabled
-                            // if (DateTime.Compare(bar.time, timeI) == 0) // never set inputs on first bar! 
-                            // {
-                            Input? input = getInput(instruments[instrI], bar);
+                            //Current bar
 
+                            Input? input = getInput(instruments[instrI], bar);
 
                             if (input != null)
                             {
-
                                 logger.log("process bar: " + bar.time.ToString(config.full_datetime_format), 2);
 
                                 logger.log("Input is here!", 2);
@@ -232,24 +172,31 @@ namespace TradeEstimator.Trade
                                 trProcesses[instrI].clearOrders(bar0.time);
 
                                 trProcesses[instrI].addOrders(newOrders);
-
-                                trProcesses[instrI].processBar(bar);
+                                
                             }
 
-
-                            // }
+                            trProcesses[instrI].processBar(bar);
                         }
-
                     }
+                    else
+                    {
+                        //First bar
 
-                    */
+                        bar = new(bar1, bar1); //virtual bar!
 
+                        logger.log("First bar", 2);
+                        logger.log("process first bar: " + bar1.time.ToString(config.full_datetime_format), 2);
+
+                        trProcesses[instrI].clearOrders(bar1.time);
+
+                        trProcesses[instrI].processFirstBar(bar1);
+                    }
 
                 } // instr cycle - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
                portfolio.update();
 
-               timeI.AddMinutes(config.tf);
+               //timeI.AddMinutes(config.tf);
 
             } // bar cycle : : : : : : : : : : : : : : : : : : : : : : : : : : : : : :
 

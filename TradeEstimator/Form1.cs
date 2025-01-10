@@ -88,8 +88,6 @@ namespace TradeEstimator
 
         string activeIndicatorName;
 
-        public bool isFinished;
-
 
         public Form1()
         {
@@ -233,7 +231,7 @@ namespace TradeEstimator
 
         private void start()
         {
-            isFinished = false;
+            //isFinished = false;
             runner = new(runnerBase);
             Application.DoEvents();
 
@@ -808,12 +806,6 @@ namespace TradeEstimator
         private void plot1_MouseUp(object sender, MouseEventArgs e) //new
         {
             if (noRun) { return; }
-
-            if (!isFinished) 
-            {
-                isFinished = true;
-                return;
-            }
 
             double x = 0;
             double y = 0;

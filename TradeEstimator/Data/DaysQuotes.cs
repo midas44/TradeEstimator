@@ -35,7 +35,7 @@ namespace TradeEstimator.Data
         public List<DBar> dBars;
 
 
-        int lastIndex;
+       // int lastIndex;
 
 
 
@@ -67,7 +67,7 @@ namespace TradeEstimator.Data
                 createDBars();
             }
 
-            lastIndex = 0;
+           // lastIndex = 0;
         }
 
 
@@ -139,7 +139,8 @@ namespace TradeEstimator.Data
 
         }
 
-
+        //Not in use
+        /*
         public DBar getDBar(DateTime timeI)
         {
             DBar dBar = null;
@@ -174,6 +175,7 @@ namespace TradeEstimator.Data
         {
             return lastIndex;
         }
+        */
 
 
     }
