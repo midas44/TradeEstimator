@@ -31,7 +31,17 @@ namespace TradeEstimator.Trade
         public double drawdown; //loss from maxProfit
 
         public double lastPrice;
-       
+
+        /*
+        public DateTime entryTime;
+
+        public DateTime exitTime;
+
+        public double entryPrice;
+
+        public double exitPrice;
+        */
+
 
         public Position(InstrConfig instrConfig, TradeModel trModel) 
         {
@@ -46,6 +56,9 @@ namespace TradeEstimator.Trade
 
         public void enter(double price)
         {
+            //entryPrice = price;
+            //entryTime = time;
+
             lastPrice = price;
         }
 

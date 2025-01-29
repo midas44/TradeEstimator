@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TradeEstimator.Trade;
+using TradeEstimator.Data;
 
 namespace TradeEstimator.Main
 {
@@ -51,7 +52,7 @@ namespace TradeEstimator.Main
         {
             int instrI = trader.instruments.IndexOf(instrName);
             List<Order> instrOrders = trader.trProcesses[instrI].inactiveOrders;
-            chart1.outputOrders(instrOrders);
+            chart1.outputOrders(instrOrders, daysQuotes);
         }
 
 

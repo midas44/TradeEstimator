@@ -233,15 +233,44 @@ namespace TradeEstimator.Charts
         }
 
 
-        private int find_chart_index(DateTime timepoint, DaysQuotes days_quotes)
+        private int find_chart_index2(DateTime timepoint, DaysQuotes days_quotes) //bug here
         {
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < n; i++) //what is n?
             {
                 if (days_quotes.Timeline[i] == timepoint)
                 {
                     return i;
                 }
             }
+            return -1;
+        }
+
+
+        private int find_chart_index(DateTime timepoint, DaysQuotes days_quotes) //bug here - days_quotes still null
+        {
+
+            if(days_quotes!= null)
+            {
+
+                //logger.log__("days_quotes is NOT null", 2);
+
+                int i = 0;
+                foreach (DateTime chartTimePoint in days_quotes.Timeline)
+                {
+                    if (DateTime.Compare(chartTimePoint, timepoint) == 0)
+                    {
+                        logger.log("find_chart_index return = " + i.ToString(), 2);
+                        return i;
+                    }
+                    i++;
+                }
+
+            }
+            else
+            {
+                logger.log__("days_quotes is null", 2);
+            }
+
             return -1;
         }
 
