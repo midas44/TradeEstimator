@@ -13,6 +13,8 @@ namespace TradeEstimator.Charts
     public partial class Chart1
     {
 
+        //o3-mini test
+
         public void outputOrders(List <Order> orders, DaysQuotes days_quotes)
         {
             foreach (var order in orders)
@@ -75,6 +77,8 @@ namespace TradeEstimator.Charts
                     orderColor = ScottPlot.Colors.Black;
                 }
             }
+
+            
 
             orderColor2 = orderColor.WithAlpha(0.5);
 
